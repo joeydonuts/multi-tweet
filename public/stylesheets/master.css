@@ -95,6 +95,10 @@ a:hover {
   background-color: #fff;
   text-decoration: underline;
 }
+label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 #footer-container {
   clear: both;
   font-size: 12px;
@@ -116,4 +120,21 @@ a:hover {
 }
 #main-container ul {
   margin-left: 3.0em;
+}
+.auth_formRow {
+  line-height:25px;
+  text-align: right;
+  width: 250px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.auth_container {
+    margin-top: 300px;
+    width: 500px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.auth_header {
+   text-align:center;
+}
 }
