@@ -1,0 +1,12 @@
+
+<h1>Signup</h1>
+
+<%= form_for(@user, :action => resource(:users)) do %>
+  <%= text_field :login, :label => "Username" %><br />
+
+  <%= password_field :password, :label => "Password" %><br />
+  <%= password_field :password_confirmation, :label => "Password Confirmation" %><br />
+
+  <%= submit "Signup" %>
+<% end =%>
+

@@ -1,0 +1,19 @@
+
+<div class='auth_container'>
+<h1>Signup</h1>
+
+<%= form_for(@user, :action => resource(:users)) do %>
+  <div class="auth_formRow">
+  <%= text_field :login, :label => "Username" %><br />
+  </div>
+  <div class="auth_formRow">
+  <%= password_field :password, :label => "Password" %><br />
+  </div>  
+  <div class="auth_formRow">
+  <%= password_field :password_confirmation, :label => "Password Confirmation" %><br />
+  </div>
+ <div class="auth_formRow">
+  <%= submit "Signup" %>
+ </div>
+<% end =%>
+</div>
