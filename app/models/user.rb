@@ -14,5 +14,6 @@ class User
   property :id,     Serial
   property :login,  String
 
-  has n, :twits  
+  has n, :twits
+  has n, :searches
 end

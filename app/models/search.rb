@@ -9,6 +9,6 @@ class Search
   property :search_interval, Integer, :default => 900
 
   has n, :searchtweets
-  belongs_to :twit
+  belongs_to :user
 
 end

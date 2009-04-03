@@ -3,6 +3,7 @@ class Twit
 
   property :id, Serial
   property :twitter_name, String
+  property :twitter_password, String
   property :last_id, Integer
   property :percent_friends, Integer, :default => 75
   property :new_tweets, Boolean, :default => false
@@ -12,6 +13,4 @@ class Twit
   has n, :friends
   has n, :groups
   has n, :followers
-  has n, :searches
-  
 end

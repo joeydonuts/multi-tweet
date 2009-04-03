@@ -1,8 +1,9 @@
 <div id="menutop" style="margin-top: 20px;margin-left: 20px">
   <% if current_user %>
-    <%= link_to "Logout", url(:logout) %>
+    <%= link_to "Logout   |", url(:logout) %>
+    <%= link_to "    Preferences", url('users/preferences') %>
   <% else %>
-    <%= link_to "Signup", resource(:users, :new) %> |
+    <%= link_to "Signup", resource(:users, :new) unless message[:notice]=='Logged Out'%> |
     <%= link_to "Login", url(:login) %>
   <% end %>
 </div>

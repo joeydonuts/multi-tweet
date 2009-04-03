@@ -17,14 +17,28 @@ class Users < Application
     @user = User.new(user)
     if @user.save
       session[:user] = @user.id
-      preferences
+      show()
     else
       message[:error] = "User failed to be created"
       render :new
     end
   end
-
-def preferences
-	render :preferences
+  def create_twitter_user()
+   t=Twit.new
+   t.twitter_name=params[:twitter_name]
+   t.twitter_password=params[:twitter_password]
+   t.user=session.user
+   begin
+   	t.save
+   rescue
+		return "Could not add twitter user"
+   end
+		"Twitter user added successfully."
+  end
+def show()
+   @twits=session.user.twits
+   @searches=session.user.searches
+   render :preferences
 end
+
 end
