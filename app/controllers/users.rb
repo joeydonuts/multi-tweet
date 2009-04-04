@@ -3,7 +3,28 @@ class Users < Application
   before :ensure_authenticated, :exclude => [:new, :create]
 
   def index
-    render
+    disp_limit=session.user.tweets_displayed
+    @twits=session.user.twits
+    @groups_by_twit = {}
+    @twits.each do |twit|
+      htemp={}
+      twit.groups.each do |group|
+        temp_tweets=[]
+        tweets=Tweet.readable(group.id,disp_limit)
+        unless tweets.empty?
+          tweets.each do |ts|
+            temp_tweets << [ts.mesage,ts.send_date,ts.friend.image]
+          end
+        end
+        htemp[group] = temp_tweets
+      end
+      @groups_by_twit[twit.twitter_name] = htemp
+    end
+    if @groups_by_twit.empty?
+		preferences
+    else
+      render
+    end
   end
 
   def new
@@ -23,21 +44,10 @@ class Users < Application
       render :new
     end
   end
-  def create_twitter_user()
-   t=Twit.new
-   t.twitter_name=params[:twitter_name]
-   t.twitter_password=params[:twitter_password]
-   t.user=session.user
-   begin
-   	t.save
-   rescue
-		return "Could not add twitter user"
-   end
-		"Twitter user added successfully."
-  end
 def show()
+   @user=session.user unless @user
    @twits=session.user.twits
-   @searches=session.user.searches
+   @searches=session.user.twits.searches
    render :preferences
 end
 

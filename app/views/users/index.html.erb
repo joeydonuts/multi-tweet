@@ -1,1 +1,17 @@
-You're in index of the Users controller.
+<div style="margin-top: 30px" id="tabs">
+  <ul>
+  <% count=1 %>
+  <% @groups_by_twit.each_key do |k| %>
+     <li><a href="#fragment-<%= count %>"><span><%= k %></span></a></li>
+     <% count += 1 %>
+ <% end %>
+ </ul>
+ <% count = 1 %>
+ <% @groups_by_twit.each_key do |k| %>
+    <div id="fragment-<%= count %>">
+      <p> nothing here </p>
+	 </div>
+    <% count += 1 %>
+  <% end %>
+</div>	
+  

@@ -2,26 +2,22 @@
     <ul>
         <li><a href="#fragment-1"><span>General</span></a></li>
         <li><a href="#fragment-2"><span>Twitter Users</span></a></li>
-        <li><a href="#fragment-3"><span>Searches</span></a></li>
     </ul>
     <div id="fragment-1">
-        <p>Place Holder for general preferences</p>
+        <p><%= check_box :id => "visual_notify", :value =>  @user.visual_notify, :label => "visual notify" %></p>
+        <p><%= check_box :id => "audio_notify", :value =>  @user.audio_notify, :label => "audio notify" %></p>
+        <p><%= text_field :tweet_query_pct, :id => "tweet_query_pct", :value =>  @user.tweet_query_pct, :label => "Percent of time allocated to tweet queries max(100)" %></p>
+        <p><%= text_field :tweets_displayed, :id => "tweets_displayed", :value =>  @user.tweets_displayed, :label => "Number of tweets displayed" %></p>
+        <p><%= button "Save General Settings", :id => "save_group" %></p>
     </div>
     <div id="fragment-2">
        <div id='twitter_users'>
 		   <p><a href="#" id="dialog_link" class="ui-state-default ui-corner-all">Add Twitter User</a></p>
-         <p style="color: red">Click on Twitter user name  below to configure user</p>
+         <p style="color: red">Your current twitter users.</p>
         <%  @twits.each do |twit| %>
-			<p><a href="#" id="twitter_dialog_<%= twit.twitter_name %>"><%= twit.twitter_name %></a></p>
+			<p><%= twit.twitter_name %></p>
         <% end %>
        </div>
-    </div>
-    <div id="fragment-3">
-		   <p><a href="#" id="search_config_link" class="ui-state-default ui-corner-all">Add Search</a></p>
-         <p style="color: red">Click on search name below to configure user.</p>
-         <% @searches.each do |search| %>
-	   		<p><a href="#" id="search_dialog_<%= search.search_name %>"><%= search.search_name %></a></p>
-        <% end %>
     </div>
 </div>
 
@@ -36,11 +32,6 @@
   <%= password_field :twitterpassword_confirmation, :id => "twitter_password_confirmation", :label => "Password Confirmation" %><br />
   </div>
 </div>
-<div id="dialog_twitter_config" title="Configure Twitter User">
-    <p>Configure your users here</p>
-</div>
-<div id="dialog_search_config" title="Configure Twitter Searches">
-	<p>Configure your searches here</p>
-</div>
-<div style="color: white" id="notice_alert" title="ALERT!"></div>
-</div>
+<div>
+		   <p><a href="/" id="dialog_link" class="ui-state-default ui-corner-all">Exit Preferences</a></p>
+</p>

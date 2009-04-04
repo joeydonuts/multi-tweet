@@ -13,7 +13,10 @@ class User
   
   property :id,     Serial
   property :login,  String
+  property :visual_notify, Boolean, :default => true
+  property :audio_notify, Boolean, :default => false
+  property :tweet_query_pct, Integer, :default => 75
+  property :tweets_displayed, Integer, :default => 100
 
   has n, :twits
-  has n, :searches
 end
