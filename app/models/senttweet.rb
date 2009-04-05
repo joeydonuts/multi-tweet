@@ -2,7 +2,7 @@ class Tweet
   include DataMapper::Resource
   
   property :id,     Serial
-  property :message,  String
+  property :message,  Text
   property :sent_date, DateTime
   property :deleted_at, DateTime, :default => nil
   

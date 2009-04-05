@@ -6,5 +6,5 @@ class Friend
   belongs_to :twit
   has n, :tweets
   has n, :groups, :through => Resource
-  
+  has 1, :image  
 end
