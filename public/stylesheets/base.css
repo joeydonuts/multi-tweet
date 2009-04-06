@@ -1,0 +1,198 @@
+/* This is a base application styling, derived from YUI base and rails scaffold */
+
+body { 
+  color: #333; 
+  font-family: "Lucida Grande", verdana, helvetica, arial, sans-serif;
+  line-height: 1.231;
+}
+
+/*  Headings  */
+h1, h2, h3, h4, h5, h6, strong {
+	font-weight: bold; 
+	font-family: "Century Schoolbook", Georgia, times, serif;
+  letter-spacing: .75px;
+}
+
+h1, h2, h3 {
+	margin: 1em;
+}
+
+h1 {
+	font-size: 138.5%; /* 18px */
+}
+
+h2 {
+	font-size: 123.1%; /* 16px */
+}
+
+h3, h4, h5, h6 {
+	font-size: 116%; /* 14px */
+}
+
+/*  Basic Text Formating  */
+p {
+    letter-spacing: 0px;
+    font-size: 108%;
+}
+
+pre, code, kbd, samp, tt {
+  font-family:monospace;
+  line-height:100%;
+}
+
+abbr, acronym {
+	border-bottom: 1px dotted #000;
+	cursor: help;
+} 
+
+em {
+	font-style: italic;
+}
+
+strong {
+	font-weight: bold;
+}
+
+blockquote {
+	margin: 1em;
+}
+
+cite {
+	font-style: italic;
+}
+
+sub {
+  vertical-align: sub;
+}
+
+sup {
+  vertical-align: super;
+}
+
+pre {
+  background-color: #eee;
+  margin: 1em;
+  padding: 2em;
+	font-size: 85%; /* 11px */
+  border: solid 1px #000;
+}
+
+code {
+  background-color: #000;
+  color: #ccc;
+	font-size: 85%; /* 11px */
+}
+
+/*  Link Decoration  */
+a, a:visited  { 
+  color: #00f;
+  text-decoration: none;
+}
+
+a:hover { 
+  color: #f00; 
+  text-decoration: underline;
+}
+
+/*  Lists */
+ol, ul, dl {
+	margin: 1em 1em 1em 2em;
+}
+  
+ol li {
+	list-style: decimal outside;	
+}
+
+ul li {
+	list-style: disc outside;
+}
+
+dl dt {
+	font-weight:bold;
+}
+
+dl dd {
+	margin-left: 1em;
+}
+
+/*  Tables  */
+th, td {
+	border: 1px solid #000;
+	padding: .5em;
+}
+
+th {
+	font-weight: bold;
+	text-align: center;
+}
+
+caption {
+	margin-bottom:.5em; /* match cell's padding */
+	text-align:center;
+}
+
+p, fieldset, table {
+	margin-bottom: 1em;
+}
+
+/*  Error Fields  */
+#errorExplanation {
+  width: 75%;
+  border: 2px solid red;
+  padding: .5em;
+  margin: 1em;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: center;
+  padding: .25em;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  margin-bottom: 0px;
+  padding: .5em;
+}
+
+#errorExplanation ul li {
+  font-size: 93%; /* 12px */
+  list-style: square;
+}
+
+/*  Forms  */
+.fieldWithErrors {
+  padding: .5em;
+  background-color: #c00;
+}
+
+/*  Clear Fix  */
+.clear {
+	clear: both;
+}
+
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+/* @end */
+
+/*  Utility Methods  */
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}

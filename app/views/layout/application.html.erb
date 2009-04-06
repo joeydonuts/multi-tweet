@@ -1,26 +1,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
   <head>
-    <title>Multi-Tweet</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="<%= "#{Merb::Config[:path_prefix]}/stylesheets/master.css" %>" type="text/css" media="screen" charset="utf-8" />
-    <link rel="stylesheet" href="<%= "#{Merb::Config[:path_prefix]}/stylesheets/demos.css" %>" type="text/css" media="screen" charset="utf-8" />
-	 <link rel="stylesheet" href="<%= "#{Merb::Config[:path_prefix]}/stylesheets/jquery-ui-1.7.1.custom.css" %>" type="text/css" media="screen" charset="utf-8" />	
-    <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js" %>"></script>
-    <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "#{Merb::Config[:path_prefix]}/javascripts/jquery.purr.js" %>"></script>
-    <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "#{Merb::Config[:path_prefix]}/javascripts/jquery.dataTables.js" %>"></script>
-    <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "#{Merb::Config[:path_prefix]}/javascripts/jquery.corners.min.js" %>"></script>
-	 <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "#{Merb::Config[:path_prefix]}/javascripts/jquery-ui-1.7.1.custom.min.js" %>"></script>
-	 <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "#{Merb::Config[:path_prefix]}/javascripts/jquery.livequery.js" %>"></script>
-	 <script language="JavaScript1.2" TYPE="text/javascript" src="<%= "#{Merb::Config[:path_prefix]}/javascripts/application.js" %>"></script>
+    <title>Multi-Tweet: <%= catch_content :title -%></title>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />  		
+  	<meta name="robots" content="all" />
+  	<meta name="keyword" content="<%= catch_content :keywords -%>" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="icon"          href="/favicon.ico" type="image/vnd.microsoft.icon" />
+    <%= css_include_tag 'reset-fonts-grids', 'base', 'jquery-ui-1.7.1.custom.css', 'demos', 'application' -%>
+    <script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+    <%= js_include_tag 'jquery.purr.js', 'jquery.dataTables.js', 'jquery.corners.min.js', 
+      'jquery-ui-1.7.1.custom.min.js', 'jquery.livequery.js', "application" -%>
+    <%= catch_content :head -%>
   </head>
-  <body style="background: black;">
-    <%= partial "shared/menu" %>
-    <div style="margin-left: 20px;color: red">
-    <%= message[:notice] %>
-	</div>
-    <div style="width:1200px;margin-left:auto;margin-right:auto">
-       <%= catch_content :for_layout %>
-    </div>
-  </body>
+  <div id="doc4" class="yui-t7">
+    <div id="hd">
+      <%= partial "shared/menu" -%>
+      <h1><a href="/"><span>Multi-Tweet</span></a></h1>
+    </div> <!-- /#hd -->
+    <div id="bd">
+      <div class="yui-g">
+        <%= message[:notice] -%>
+      </div>
+      <a name="content" class="hidden">Content:</a>
+      <%# FIXME: remove the grid container around the following catch_content, and format each page with appropriate grids -%>
+      <div class="yui-g">
+      <%= catch_content :for_layout -%>
+      </div>
+    </div> <!-- /#bd -->
+    <div id="ft" role="complementary">
+      <p><a href='http://wiki.github.com/joeydonuts/multi-tweet'>Multi-Tweet Project Homepage</a></p>
+    </div> <!-- /#ft -->
+	</div> <!-- / #doc4 .yui-t7 -->
+	</body>
 </html>
