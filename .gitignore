@@ -16,3 +16,9 @@ src/*
 .hgignore
 .hg/*
 .svn/*
+gems/gems/*
+gems/specifications/*
+merb_profile_results
+.*swp
+config.ru
+config/database.yml
