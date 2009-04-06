@@ -1,5 +1,9 @@
 <div class="yui-g">
   <h2>Signup</h2>
+  
+ <div style="color: yellow"> 
+     <%= message[:error] -%>
+ </div>
   <%= form_for(@user, :action => resource(:users)) do -%>
     <p class="field_container"><%= text_field :login, :label => "Username: " -%></p>
     <p class="field_container"><%= password_field :password, :label => "Password: " -%></p>
