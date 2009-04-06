@@ -56,6 +56,13 @@ User Menu
   display:none;
 }
 
+/*-----------------
+Tabs - fixing jqueryui
+-----------------*/
+#tabs ul li {
+  list-style-type:none;
+}
+
 
 /*-----------------
 Footer
@@ -88,7 +95,7 @@ Authorization
 }
 
 /*-----------------
-No Clue
+Popup Notifications
 -----------------*/
 #purr-container {
    position: fixed;
