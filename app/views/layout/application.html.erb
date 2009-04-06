@@ -14,24 +14,22 @@
       'jquery-ui-1.7.1.custom.min.js', 'jquery.livequery.js', "application" -%>
     <%= catch_content :head -%>
   </head>
-  <div id="doc3" class="yui-t7">
-    <div id="hd">
-      <%= partial "shared/menu" -%>
-      <h1><a href="/"><span>Multi-Tweet</span></a></h1>
-    </div> <!-- /#hd -->
-    <div id="bd">
-      <div class="yui-g">
-        <%= message[:notice] -%>
-      </div>
-      <a name="content" class="hidden">Content:</a>
-      <%# FIXME: remove the grid container around the following catch_content, and format each page with appropriate grids -%>
-      <div class="yui-g">
-        <%= catch_content :for_layout -%>
-      </div>
-    </div> <!-- /#bd -->
-    <div id="ft" role="complementary">
-      <p><a href='http://wiki.github.com/joeydonuts/multi-tweet'>Multi-Tweet Project Homepage</a></p>
-    </div> <!-- /#ft -->
-	</div> <!-- / #doc4 .yui-t7 -->
+  <body>
+    <div id="doc3" class="yui-t7">
+      <div id="hd">
+        <%= partial "shared/menu" -%>
+        <h1><a href="/"><span>Multi-Tweet</span></a></h1>
+      </div> <!-- /#hd -->
+      <div id="bd">
+        <div class="yui-g">
+          <%= message[:notice] -%>
+        </div>
+        <a name="content" class="hidden">Content:</a>
+          <%= catch_content :for_layout -%>
+      </div> <!-- /#bd -->
+      <div id="ft">
+        <p><a href='http://wiki.github.com/joeydonuts/multi-tweet'>Multi-Tweet Project Homepage</a></p>
+      </div> <!-- /#ft -->
+  	</div> <!-- / #doc4 .yui-t7 -->
 	</body>
 </html>
