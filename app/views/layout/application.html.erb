@@ -20,10 +20,13 @@
         <%= partial "shared/menu" -%>
         <h1><a href="/"><span>Multi-Tweet</span></a></h1>
       </div> <!-- /#hd -->
-      <div id="bd">
+      <div id="bd" style="<%= "text-align: center" unless current_user -%>" >
+        
+         <% if message[:notice] %>
          <div class="yui-g"> 
           <%= message[:notice] -%>
          </div>
+        <% end %>
         <a name="content" class="hidden">Content:</a>
           <%= catch_content :for_layout -%>
       </div> <!-- /#bd -->
