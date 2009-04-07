@@ -15,4 +15,5 @@ class Twit
   has n, :groups
   has n, :followers
   has n, :searches
+
 end
