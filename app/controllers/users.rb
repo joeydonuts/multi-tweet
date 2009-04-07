@@ -43,7 +43,13 @@ class Users < Application
       session[:user] = @user.id
       show()
     else
-      message[:error] = "User failed to be created #{$!.to_s}"
+      s=""
+      @user.errors.each do |e|
+       e.each do |error|
+         s << "---" + error
+       end
+      end
+      message[:error] = "User failed to be created #{s}"
       render :new
     end
   end
