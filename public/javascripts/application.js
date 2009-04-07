@@ -57,8 +57,8 @@
 	});
 */
    
-   $("#tabs").tabs();
-  });
+   //$("#tabs").tabs();
+  })
   function save_twitter_user(caller){
    var twitter_name=$("#twitter_user").attr('value');
    var twitter_password=$("#twitter_password").attr('value');
