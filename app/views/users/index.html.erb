@@ -1,29 +1,55 @@
 <script type="text/javascript">
-var myTabs = new YAHOO.widget.TabView("tabs");
+var myTabs = new YAHOO.widget.TabView("user_tabs");
 </script> 
 
-<div id="tabs" class="yui-navset">
+<div id="user_tabs" class="yui-navset">
     <ul class="yui-nav">
         <% count=1 %>
-        <% @groups_by_twit.each_key do |k| %> 
-        <li><a href="#tab<%= count %>"><em><%= k %></em></a></li>
+        <% @twits.each do |twit| %> 
+        <li><a href="#tab_1<%= count %>"><em><%= twit.twitter_name %></em></a></li>
         <% count += 1 %>
         <% end %>
-        <li class="selected"><a href="#tab<%= count %>"><em>Searches</em></a></li>
+        <li class="selected"><a href="#tab_1<%= count %>"><em>Searches</em></a></li>
     </ul>            
     <div class="yui-content" style="background: black;color: white">
+        <% @twits.each do |twit| %>
         <div>
-          <div style="width: 100%;"><p style="border: solid thin red">add group</p></div>
-           <div style="font-size: 75%;border: solid thin white;float: left;width: 32%"> 
-            <p style="color: red;border: solid thin yellow">GROUP NAME GOES HERE</p>
-				<p>only a little bit here but getting bigger</p>
-				<p>only a little bit here but getting bigger</p>
-				<p>only a little bit here but getting bigger</p>
-				</div>
-           <div style="margin-left: 1.5%;font-size: 75%;border: solid thin white;float: left;width: 32%"> <p>only a little bit here but getting bigger</p> </div>
-           <div style="margin-left: 1.5%;font-size: 75%;border: solid thin white;float: left;width: 32%"><p>only a little bit here but getting bigger</p> </div>
+          <div style="width: 100%;">
+		     <p><a href="#" id="dialog_link_group_add_<%= twit.id %>" class="ui-state-default ui-corner-all">Add Group</a></p>
+			</div>
+          <% twit.groups.each do |group| %>
+           <div id="<% group.group_name %>" class="group_display">              
+            <p class="group_name"><%= group.group_name %></p>
+               <% group.readable_tweets.each do |tweet| %>
+						<p><%= tweet.first %><%= tweet.last %>
+               <% end %>
+			  </div>
+          <% end %>
         </div>
-        <div><p>Tab Two Content</p></div>
-        <div><p>Tab Three Content</p></div>
+       <% end %>
+       <div>
+         <div style="width: 100%;">
+		     <p><a href="#" id="dialog_link_search_add" class="ui-state-default ui-corner-all">Add Search</a></p>
+         </div>
+         <% @searches.each do |search| %>
+           <div id="<%= search.search_name %>" class="group_display">              
+            <p class="group_name"><%= search.search_name %></p>
+               <% search.readable_tweets.each do |tweet| %>
+						<p><%= tweet.first %><%= tweet.last %>
+               <% end %>
+         <% end %>
+       </div>
+       
     </div>
 </div>
+<!-- Dialogs go here -->
+<div id="dialog_twitter_group_add" title="Add Group">
+   <p class="field_container"><%= text_field :group_name, :id => "group_name", :label => "Name for the Group: " -%></p>
+    <p>Select the friends for this group</p>
+    <div id="group_friend_list">
+    </div>
+</div>      
+<div id="dialog_search_add" title="Add Search">
+   <p class="field_container"><%= text_field :search_name, :id => "group_name", :label => "Name for the Search: " -%></p>
+   <p class="field_container"><%= text_field :search_term, :id => "group_name", :label => "Search Words: " -%></p>
+</div>      

@@ -12,13 +12,11 @@
    }
    }
     );
-			
    $('#dialog_link').click(function(){
 		$('#dialog').dialog('open');
 		return false;
 	});
-/*
-   $("#dialog_twitter_config").dialog({
+   $("#dialog_twitter_group_add").dialog({
        autoOpen: false,
        buttons: {
        "Save": function(){
@@ -29,7 +27,29 @@
        }  
 		 }
    });
-
+   $("a[id^='dialog_link_group_add']").click(function(){
+       var twit_id=this.id.split(/\_/).pop()
+       $("#group_friend_list").html('');
+       get_twitter_friends(twit_id);
+		$('#dialog_twitter_group_add').dialog('open');
+		return false;
+	});
+   $("#dialog_search_add").dialog({
+       autoOpen: false,
+       buttons: {
+       "Save": function(){
+        $(this).dialog("close")
+       },
+       "Cancel": function(){
+        $(this).dialog("close")
+       }  
+		 }
+   });
+   $('#dialog_link_search_add').click(function(){
+		$('#dialog_search_add').dialog('open');
+		return false;
+	});
+/*
    $("#dialog_search_config").dialog({
        autoOpen: false,
        buttons: {
@@ -56,8 +76,7 @@
 		return false;
 	});
 */
-   
-   //$("#tabs").tabs();
+   $("#tabs").tabs();
   })
   function save_twitter_user(caller){
    var twitter_name=$("#twitter_user").attr('value');
@@ -75,6 +94,13 @@
     }
    );
   }
+    function get_twitter_friends(id){
+       $.post("../twits/list_friends",{ twit_id : id },
+       function(data){
+       $("#group_friend_list").html(data);
+	 });
+    }
+
     function notify(msg){
         var notice = '<div class="notice">'
         + '<div class="notice-body">'

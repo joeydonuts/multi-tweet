@@ -93,6 +93,20 @@ Authorization
 .auth_header {
    text-align:center;
 }
+.group_display{
+font-size: 75%;
+border: solid thin white;
+float: left;
+width: 32%;
+}
+.group_banner{
+padding-left: 10px;
+border: solid thin red;
+}
+.group_name{
+color: red;
+border: solid thin yellow;
+}
 
 /*-----------------
 Popup Notifications

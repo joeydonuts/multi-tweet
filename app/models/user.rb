@@ -20,4 +20,5 @@ class User
  
   validates_is_unique :login
   has n, :twits
+  has n, :searches
 end

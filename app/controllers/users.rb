@@ -6,6 +6,8 @@ class Users < Application
    # if current_user
       disp_limit=session.user.tweets_displayed
       @twits=session.user.twits
+      @searches=session.user.searches
+=begin
       @groups_by_twit = {}
       @twits.each do |twit|
         htemp={}
@@ -21,13 +23,12 @@ class Users < Application
       end
         @groups_by_twit[twit.twitter_name] = htemp
       end
-      if @groups_by_twit.empty?
+=end
+      if @twits.empty? and @searches.empty?
 	    	show
       else
         render
       end
-    #    render
-    #end
   end
 
   def new

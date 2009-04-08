@@ -17,6 +17,14 @@ class Twits < Application
 	"Twitter user added successfully #{z}"
   end
 
+  def show(id)
+     render
+  end
+  def list_friends()
+     @twit=Twit.get(params[:twit_id]);
+     partial(:show_friends)
+  end
+
 private
   def get_friends()
     begin

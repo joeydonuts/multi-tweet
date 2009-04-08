@@ -10,5 +10,9 @@ class Search
 
   has n, :searchtweets
   belongs_to :user
-
+  
+  def readable_tweets()
+      a_res=[]
+      return a_res
+  end
 end
