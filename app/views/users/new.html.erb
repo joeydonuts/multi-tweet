@@ -1,7 +1,8 @@
 <div class="auth-container"> 
  <h3 class='auth_header'>Signup</h3>
  <div style="color: yellow">
-     <%= message[:error] -%>
+     
+     <%= messages[:eeror] -%>
  </div>
   <%= form_for(@user, :action => resource(:users)) do -%>
     <p class="field_container"><%= text_field :login, :label => "Username: " -%></p>
