@@ -1,0 +1,3 @@
+<% @twit.friends.each do |friend| %>
+     <p class="field_container"><%= check_box :id => "group_member_#{friend.id}", :name => "#{friend.id}", :boolean => false, :label => "#{friend.twitter_name}" -%></p>
+<% end %>

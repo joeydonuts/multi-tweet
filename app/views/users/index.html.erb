@@ -20,9 +20,12 @@ var myTabs = new YAHOO.widget.TabView("user_tabs");
           <% twit.groups.each do |group| %>
            <div id="<% group.group_name %>" class="group_display">              
             <p class="group_name"><%= group.group_name %></p>
-               <% group.readable_tweets.each do |tweet| %>
-						<p><%= tweet.first %><%= tweet.last %>
+               <table>
+            
+               <% group.readable_tweets(twit).each do |tweet| %>
+					<tr><td><img src="<%= tweet.first %>"/></td><td><%= tweet[1] %></td></tr>
                <% end %>
+               </table>
 			  </div>
           <% end %>
         </div>
@@ -44,12 +47,12 @@ var myTabs = new YAHOO.widget.TabView("user_tabs");
 </div>
 <!-- Dialogs go here -->
 <div id="dialog_twitter_group_add" title="Add Group">
-   <p class="field_container"><%= text_field :group_name, :id => "group_name", :label => "Name for the Group: " -%></p>
+   <p class="field_container"><%= text_field :group_name, :id => "group_name", :label => "Name for the Group:", :value => "" -%></p>
     <p>Select the friends for this group</p>
     <div id="group_friend_list">
     </div>
 </div>      
 <div id="dialog_search_add" title="Add Search">
-   <p class="field_container"><%= text_field :search_name, :id => "group_name", :label => "Name for the Search: " -%></p>
-   <p class="field_container"><%= text_field :search_term, :id => "group_name", :label => "Search Words: " -%></p>
+   <p class="field_container"><%= text_field :search_name, :id => "search_name", :label => "Name for the Search: ", :value => "" -%></p>
+   <p class="field_container"><%= text_field :search_term, :id => "search_term", :label => "Search Words: " -%></p>
 </div>      

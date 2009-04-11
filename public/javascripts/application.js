@@ -20,7 +20,10 @@
        autoOpen: false,
        buttons: {
        "Save": function(){
-        $(this).dialog("close")
+        res=save_twitter_group(this)
+        if(res == true){
+				$(this).dialog("close")
+        }
        },
        "Cancel": function(){
         $(this).dialog("close")
@@ -50,17 +53,6 @@
 		return false;
 	});
 /*
-   $("#dialog_search_config").dialog({
-       autoOpen: false,
-       buttons: {
-       "Save": function(){
-        $(this).dialog("close")
-       },
-       "Cancel": function(){
-        $(this).dialog("close")
-       }  
-		 }
-   });
    $("a[id^='twitter_dialog']").livequery(function(){
       $(this).click(function(){
 		$('#dialog_twitter_config').dialog('open');
@@ -78,6 +70,7 @@
 */
    $("#tabs").tabs();
   })
+//--------------------------End of document ready function------------------------------
   function save_twitter_user(caller){
    var twitter_name=$("#twitter_user").attr('value');
    var twitter_password=$("#twitter_password").attr('value');
@@ -99,8 +92,40 @@
        function(data){
        $("#group_friend_list").html(data);
 	 });
+     return false
     }
-
+    function save_twitter_group(caller){
+    group_name=validate_text_field('group_name')
+    if( !group_name){
+			notify('Please enter a valid name for the group<span style="color: red"> [must have at least 1  character(a-z A-Z) or 1 numeral]<span>')
+         return false;
+    }
+    count =0
+    a_friends=[]
+    test=$("input[id^='group_member']")
+    $("input[id^='group_member']").each(function(n){
+    	if(this.checked==true){
+          a_friends.push(this.name);
+		}
+	 });
+    friend_list = a_friends.join("^^")
+       $.post("../groups/new",{ friend_list : friend_list, group_name : group_name },
+       function(data){
+          notify(data)
+       });
+    return true
+    }
+	 function save_search(){
+      
+    }
+    function validate_text_field(field_id){
+      var pattern = /[a-zA-Z0-9]/
+      var test = $("input[id='" + field_id + "']").val()
+      if(pattern(test) != null){
+			return test
+      }
+      return false
+    } 
     function notify(msg){
         var notice = '<div class="notice">'
         + '<div class="notice-body">'
