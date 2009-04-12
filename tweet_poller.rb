@@ -19,6 +19,9 @@ users.each do |user|
           twit.get_tweets
         end
     }
+    user.searches.each do |search|
+      search.get_tweets(user)
+    end
 end
  threads.each do |t|
     t.join

@@ -1,5 +1,6 @@
 // Common JavaScript code across your application goes here.
   $(document).ready(function(){
+//---Function for adding twitter user--
     $("#dialog").dialog({
      autoOpen: false,
      buttons: {
@@ -16,6 +17,7 @@
 		$('#dialog').dialog('open');
 		return false;
 	});
+//---Function for adding a group to twitter user
    $("#dialog_twitter_group_add").dialog({
        autoOpen: false,
        buttons: {
@@ -37,11 +39,15 @@
 		$('#dialog_twitter_group_add').dialog('open');
 		return false;
 	});
+//--Function for adding a search
    $("#dialog_search_add").dialog({
        autoOpen: false,
        buttons: {
        "Save": function(){
-        $(this).dialog("close")
+        z=save_search(this)
+        if(z){
+          $(this).dialog("close")
+        }
        },
        "Cancel": function(){
         $(this).dialog("close")
@@ -71,6 +77,23 @@
    $("#tabs").tabs();
   })
 //--------------------------End of document ready function------------------------------
+  function save_search(caller){
+    var search_name=validate_text_field('search_name')
+    if(!search_name){
+         notify("Please enter a valid name for the search")
+         return false
+    }
+    var search_term=validate_text_field('search_term')
+    if(!search_term){
+         notify("Please enter a valid search term")
+         return false
+     }
+     $.post("../searches/new",{ search_name : search_name, search_term : search_term },
+        function(data){
+            notify(data);
+        });
+     return true
+  }
   function save_twitter_user(caller){
    var twitter_name=$("#twitter_user").attr('value');
    var twitter_password=$("#twitter_password").attr('value');
@@ -114,9 +137,6 @@
           notify(data)
        });
     return true
-    }
-	 function save_search(){
-      
     }
     function validate_text_field(field_id){
       var pattern = /[a-zA-Z0-9]/

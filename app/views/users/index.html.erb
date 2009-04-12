@@ -37,9 +37,11 @@ var myTabs = new YAHOO.widget.TabView("user_tabs");
          <% @searches.each do |search| %>
            <div id="<%= search.search_name %>" class="group_display">              
             <p class="group_name"><%= search.search_name %></p>
+               <table>
                <% search.readable_tweets.each do |tweet| %>
-						<p><%= tweet.first %><%= tweet.last %>
+					   <tr><td><img src="<%= tweet.first %>"/></td><td><%= tweet[1] %></td></tr>
                <% end %>
+              </table>
          <% end %>
        </div>
        

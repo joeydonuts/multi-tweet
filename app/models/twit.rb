@@ -36,19 +36,19 @@ class Twit
      next if self.twitter_name == msg.user.screen_name
          f=Friend.first(:twitter_name => msg.user.screen_name, :twit_id => self.id)
          if not f
-           f=Friend.new(:twitter_name => msg.user.screen_name)
-           f.twit = self
+           f=Friend.new(:twitter_name => msg.user.screen_name, :twit_id => self.id)
            f.save
-           i=Image.new
-           i.url=msg.user.profile_image_url
-           i.friend=f
+           i=Image.new(:url => msg.user.profile_image_url, :friend_id => f.id)
            i.save 
          end
-         
-         t=Tweet.new()
-         t.message = msg.text
-         t.sent_date = convert_twit_time(msg.created_at)
-         t.friend_id=f.id
+         msg.text =~ /\s(http[^\s]+)/
+         if $1
+            sub=$1.dup
+            msg_save=msg.text.sub(/\shttp[^\s]+/," <a href=\"#{sub}\" target=\"_blank\">#{sub}<\/a>")
+         else
+				msg_save=msg.text
+         end
+         t=Tweet.new(:message => msg_save, :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:%S"), :friend_id => f.id)
          t.save
 	  end 
      return true
@@ -94,9 +94,4 @@ class Twit
      end
      return "and friends friends images and followers saved successfully"
 end
-private
-    def convert_twit_time(s)
-      year,mon,day,hr,min,sec,offset,zone=ParseDate::parsedate(s)
-      "#{year}-#{mon}-#{day} #{hr}:#{min}:#{sec}"
-    end
 end
