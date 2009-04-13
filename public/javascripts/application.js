@@ -75,6 +75,7 @@
 	});
 */
    $("#tabs").tabs();
+
   })
 //--------------------------End of document ready function------------------------------
   function save_search(caller){

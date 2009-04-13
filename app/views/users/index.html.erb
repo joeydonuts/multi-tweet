@@ -1,19 +1,15 @@
-<script type="text/javascript">
-var myTabs = new YAHOO.widget.TabView("user_tabs");
-</script> 
-
-<div id="user_tabs" class="yui-navset">
-    <ul class="yui-nav">
-        <% count=1 %>
+<div id="tabs" style="margin-top: 30px">
+    <ul>
+        <% count = 1 %>
         <% @twits.each do |twit| %> 
-        <li><a href="#tab_1<%= count %>"><em><%= twit.twitter_name %></em></a></li>
+        <li><a href="#fragment_<%= count %>"><span><%= twit.twitter_name %></span></a></li>
         <% count += 1 %>
         <% end %>
-        <li class="selected"><a href="#tab_1<%= count %>"><em>Searches</em></a></li>
-    </ul>            
-    <div class="yui-content" style="background: black;color: white">
+        <li><a href="#fragment_<%= count %>"><span>Searches</span></a></li>
+    </ul>
+		  <%count = 1 %>  
         <% @twits.each do |twit| %>
-        <div>
+        <div id="fragment_<%= count %>">
           <div style="width: 100%;">
 		     <p><a href="#" id="dialog_link_group_add_<%= twit.id %>" class="ui-state-default ui-corner-all">Add Group</a></p>
 			</div>
@@ -21,16 +17,17 @@ var myTabs = new YAHOO.widget.TabView("user_tabs");
            <div id="<% group.group_name %>" class="group_display">              
             <p class="group_name"><%= group.group_name %></p>
                <table>
-            
                <% group.readable_tweets(twit).each do |tweet| %>
 					<tr><td><img src="<%= tweet.first %>"/></td><td><%= tweet[1] %></td></tr>
                <% end %>
                </table>
 			  </div>
           <% end %>
-        </div>
+       <br clear="left"/>
+        </div> <!-- div for fragment-->
+        <% count += 1 %>
        <% end %>
-       <div>
+       <div id="fragment_<%= count %>">
          <div style="width: 100%;">
 		     <p><a href="#" id="dialog_link_search_add" class="ui-state-default ui-corner-all">Add Search</a></p>
          </div>
@@ -43,10 +40,11 @@ var myTabs = new YAHOO.widget.TabView("user_tabs");
                <% end %>
               </table>
          <% end %>
-       </div>
-       
+       </div>  <!--serarch fragment div -->
+		<br clear="left"/>
     </div>
 </div>
+
 <!-- Dialogs go here -->
 <div id="dialog_twitter_group_add" title="Add Group">
    <p class="field_container"><%= text_field :group_name, :id => "group_name", :label => "Name for the Group:", :value => "" -%></p>
