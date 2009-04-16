@@ -14,6 +14,7 @@ Merb::Config.use do |c|
   c[:session_secret_key]  = '6ec7689eb1c2afdba300cb45c72ac585e7b82e07'  # required for cookie session store
   c[:session_id_key] = '_multi-tweet_session_id' # cookie session id key, defaults to "_session_id"
   c[:path_prefix] = nil
+  c[:environment] = 'development'
 end
  
 Merb::BootLoader.before_app_loads do
@@ -22,4 +23,6 @@ end
  
 Merb::BootLoader.after_app_loads do
   # This will get executed after your app's classes have been loaded.
+   require Merb::Config[:merb_root] + '/tweet_poller.rb'
+   Tweet_poller.start
 end

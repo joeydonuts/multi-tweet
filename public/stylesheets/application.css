@@ -97,6 +97,8 @@ Authorization
 font-size: 75%;
 border: solid thin white;
 float: left;
+padding-left: 10px;
+margin-left: 10px;
 width: 32%;
 }
 .group_banner{
@@ -106,6 +108,8 @@ border: solid thin red;
 .group_name{
 color: red;
 border: solid thin yellow;
+padding-left: 10px;
+margin-right: 10px;
 }
 
 /*-----------------

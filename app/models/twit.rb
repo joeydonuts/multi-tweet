@@ -27,13 +27,18 @@ class Twit
   end
   def get_tweets()
      twitter=Twitter::Base.new(self.twitter_name, self.twitter_password)
-     messages=twitter.timeline( :friends, :since_id => self.last_id)
-     unless messages.empty?
+     begin
+       messages=twitter.timeline( :friends, :since_id => self.last_id)
+       unless messages.empty?
          self.last_id = messages[0].id
          self.save
+       end
+     rescue Exception => e
+        
      end
+     begin
      messages.each do |msg|
-     next if self.twitter_name == msg.user.screen_name
+         next if self.twitter_name == msg.user.screen_name
          f=Friend.first(:twitter_name => msg.user.screen_name, :twit_id => self.id)
          if not f
            f=Friend.new(:twitter_name => msg.user.screen_name, :twit_id => self.id)
@@ -50,7 +55,9 @@ class Twit
          end
          t=Tweet.new(:message => msg_save, :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:%S"), :friend_id => f.id)
          t.save
-	  end 
+     end
+     rescue Exception => e
+     end 
      return true
   end
   def get_friends()

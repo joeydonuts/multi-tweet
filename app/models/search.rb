@@ -19,6 +19,7 @@ class Search
     default_per_page=49
     query=self.search_terms.gsub(/\s/,'+')
     count = 0
+    begin
     1.upto(max_page_number) do |page_number|
       Twitter::Search.new(query).since(self.last_id).per_page(default_per_page).page(page_number).each do |msg|
          self.last_id = msg.id if count == 0
@@ -35,6 +36,8 @@ class Search
           :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:$S"),:sender => msg.from_user, :image_url => msg.profile_image_url)
           st.save
       end
+    end
+    rescue Exception => e
     end
   end
   def readable_tweets()

@@ -18,7 +18,7 @@
             <p class="group_name"><%= group.group_name %></p>
                <table>
                <% group.readable_tweets(twit).each do |tweet| %>
-					<tr><td><img src="<%= tweet.first %>"/></td><td><%= tweet[1] %></td></tr>
+					<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %></td></tr>
                <% end %>
                </table>
 			  </div>
@@ -36,7 +36,7 @@
             <p class="group_name"><%= search.search_name %></p>
                <table>
                <% search.readable_tweets.each do |tweet| %>
-					   <tr><td><img src="<%= tweet.first %>"/></td><td><%= tweet[1] %></td></tr>
+					   <tr><td><img src="<%= tweet.first %>" height="32px" width="32px"/></td><td><%= tweet[1] %></td></tr>
                <% end %>
               </table>
          <% end %>
