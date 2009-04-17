@@ -34,6 +34,7 @@
    });
    $("a[id^='dialog_link_group_add']").click(function(){
        var twit_id=this.id.split(/\_/).pop()
+       $("#group_twit_id").val(twit_id)
        $("#group_friend_list").html('');
        get_twitter_friends(twit_id);
 		$('#dialog_twitter_group_add').dialog('open');
@@ -74,10 +75,61 @@
 		return false;
 	});
 */
-   $("#tabs").tabs();
+   $("#user_display").everyTime(60000,function(i){
+      $("div[id^=group_bar]").each(function(n){
+          var twit_id=this.id.split(/_/)[2]
+          $.post("../twits/get_status",{ twit_id : twit_id }, function(data){
+             span_id="#remain_" + twit_id
+             a_res=eval(data)
+             $(span_id).text(a_res[0])
+             if(a_res[1]){
+		get_group_tweets(twit_id)
+             }
+             if(a_res[2]){
+		get_search_tweets()
+	     } 
+          });
+      });
+   });
 
+   $("#tabs").tabs();
   })
 //--------------------------End of document ready function------------------------------
+  function get_search_tweets(){
+     var test_length=$("div[id^=search_]").length - 1
+     $("div[id^=search_]").each(function(n){
+ 	var search_id = this.id.spplit(/_/)[1]
+        if(n == test_length){
+          var vars={ search_id : search_id, reset : 1 }
+        }
+        else{
+	  var vars={ search_id : search_id}
+        }
+        $.post("../searches/get_new_searches",vars,function(data){
+           tableID="#table_search_" + search_id + " tbody"
+           $(tableID).html(data) 
+        });
+     });
+  }
+  function get_group_tweets(twit_id){
+      var test="div[id^=group_" + twit_id + "]"
+      var test_length=$(test).length - 1
+      $(test).each(function(n){
+         var group_name=this.id.split(/_/)[2]
+
+         if(n==test_length){
+		var vars={group_name : group_name, twit_id : twit_id, reset : 1 }
+         }
+         else{
+    		var vars={ group_name : group_name, twit_id : twit_id }
+         }
+         $.post("../groups/get_group_tweets", vars, function(data){
+           tableID="#table_" + twit_id + "_" + group_name + " tbody"
+           $(tableID).html(data)  
+	});
+      });
+  }
+
   function save_search(caller){
     var search_name=validate_text_field('search_name')
     if(!search_name){
@@ -120,6 +172,7 @@
     }
     function save_twitter_group(caller){
     group_name=validate_text_field('group_name')
+    twit_id=$("#group_twit_id").val()
     if( !group_name){
 			notify('Please enter a valid name for the group<span style="color: red"> [must have at least 1  character(a-z A-Z) or 1 numeral]<span>')
          return false;
@@ -133,8 +186,9 @@
 		}
 	 });
     friend_list = a_friends.join("^^")
-       $.post("../groups/new",{ friend_list : friend_list, group_name : group_name },
+       $.post("../groups/new",{ friend_list : friend_list, group_name : group_name, twit_id : twit_id },
        function(data){
+          reset_group_dialog()
           notify(data)
        });
     return true
@@ -146,7 +200,11 @@
 			return test
       }
       return false
-    } 
+    }
+    function reset_group_dialog(){
+	$("#group_name").val('')
+        $("#groupp_twit_id").val('')
+    }
     function notify(msg){
         var notice = '<div class="notice">'
         + '<div class="notice-body">'

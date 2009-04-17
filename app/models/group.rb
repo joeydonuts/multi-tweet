@@ -5,7 +5,7 @@ class Group
   property :group_name, String
   has n, :friends, :through => Resource
   
-  def readable_tweets(twit)
+  def readable_tweets(twit,reset_new_tweets=false)
     a_res=[]
     self.friends.each do |friend|
         url=friend.image.url
@@ -15,6 +15,10 @@ class Group
         end
     end
     a_res.sort!{|a,b| b[2] <=> a[2]}
+    if reset_new_tweets
+      twit.new_tweets=false
+      twit.save
+    end
     return a_res[0...twit.user.tweets_displayed] 
   end
 end

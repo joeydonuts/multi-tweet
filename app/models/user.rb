@@ -17,6 +17,7 @@ class User
   property :audio_notify, Boolean, :default => false
   property :tweet_query_pct, Integer, :default => 75
   property :tweets_displayed, Integer, :default => 100
+  property :new_search_tweets, Boolean, :default => false
  
   validates_is_unique :login
   has n, :twits

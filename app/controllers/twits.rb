@@ -1,5 +1,4 @@
 class Twits < Application
-
   def index
     render
   end
@@ -24,6 +23,11 @@ class Twits < Application
      @twit=Twit.get(params[:twit_id]);
      partial(:show_friends)
   end
-
-private
+  def get_status()
+     provides :json
+     @twit=Twit.get(params[:twit_id])
+     user_id=session.user.id
+     @twit_status=@twit.status(user_id)
+      partial(:status)
+  end
 end

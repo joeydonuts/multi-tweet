@@ -18,11 +18,13 @@ class Search
     max_page_number=2
     default_per_page=49
     query=self.search_terms.gsub(/\s/,'+')
-    count = 0
     begin
     1.upto(max_page_number) do |page_number|
+     count=0
       Twitter::Search.new(query).since(self.last_id).per_page(default_per_page).page(page_number).each do |msg|
          self.last_id = msg.id if count == 0
+         self.user.new_search_tweets = true if count == 0
+         self.user.save if count == 0
          self.save
          count += 1
          msg.text =~ /\s(http[^\s]+)/
@@ -40,10 +42,14 @@ class Search
     rescue Exception => e
     end
   end
-  def readable_tweets()
+  def readable_tweets(reset=false)
       a_res=[]
       self.searchtweets.each do |tweet|
-			a_res <<[tweet.image_url, tweet.message, tweet.sent_date.to_s]
+	  a_res <<[tweet.image_url, tweet.message, tweet.sent_date.to_s]
+      end
+      if reset
+          self.user.new_search_treats=false
+          self.user.save
       end
       a_res.sort!{|a,b| b[2] <=> a[2]}
       return a_res[0...self.user.tweets_displayed] 

@@ -8,7 +8,6 @@ class Twit
   property :last_id, Integer, :default => 1
   property :percent_friends, Integer, :default => 75
   property :new_tweets, Boolean, :default => false
-  property :new_search_tweets, Boolean, :default => false
   property :user_id, Integer, :unique_index => :twit_user_pair
 
   belongs_to :user
@@ -31,10 +30,10 @@ class Twit
        messages=twitter.timeline( :friends, :since_id => self.last_id)
        unless messages.empty?
          self.last_id = messages[0].id
+         self.new_tweets = true
          self.save
        end
      rescue Exception => e
-        
      end
      begin
      messages.each do |msg|
@@ -101,4 +100,13 @@ class Twit
      end
      return "and friends friends images and followers saved successfully"
 end
+  def status(user_id)
+        begin
+     	  twitter = Twitter::Base.new( self.twitter_name,self.twitter_password )
+          user=User.get(user_id)
+	  [twitter.rate_limit_status.remaining_hits, self.new_tweets]
+        rescue
+		["?",false,false]
+        end	
+  end
 end

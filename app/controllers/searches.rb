@@ -8,4 +8,9 @@ class Searches < Application
       @search.save
       partial(:new_search)
   end  
+  def get_new_searches()
+    @search=Search.get(params[:search_id])
+    @search_tweets=@search.readable_tweets(params[:reset])
+    partial(:new_searches)
+  end
 end
