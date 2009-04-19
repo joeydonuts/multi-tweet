@@ -24,13 +24,13 @@
        "Save": function(){
         res=save_twitter_group(this)
         if(res == true){
-				$(this).dialog("close")
+	   $(this).dialog("close")
         }
        },
        "Cancel": function(){
         $(this).dialog("close")
        }  
-		 }
+	 }
    });
    $("a[id^='dialog_link_group_add']").click(function(){
        var twit_id=this.id.split(/\_/).pop()
@@ -59,6 +59,29 @@
 		$('#dialog_search_add').dialog('open');
 		return false;
 	});
+// function for tweeting
+   $("#dialog_send_tweet").dialog({
+       width: 500,
+       autoOpen: false,
+       buttons: {
+       "Send": function(){
+        res=send_tweet(this)
+        if(res == true){
+	   $(this).dialog("close")
+        }
+       },
+       "Cancel": function(){
+        $(this).dialog("close")
+       }  
+	 }
+   });
+   $("a[id^='dialog_link_tweet']").click(function(){
+       var twit_id=this.id.split(/\_/).pop()
+       $("#send_tweet_twit_id").val(twit_id)
+	 $('#dialog_send_tweet').dialog('open');
+	 return false;
+	});
+
 /*
    $("a[id^='twitter_dialog']").livequery(function(){
       $(this).click(function(){
@@ -66,14 +89,6 @@
 		return false;
 	});
    });
-   $("#search_config_link").click(function(){
-		$('#dialog_search_config').dialog('open');
-		return false;
-	});
-   $("a[id^='search_dialog']").click(function(){
-		$('#dialog_search_config').dialog('open');
-		return false;
-	});
 */
    $("#user_display").everyTime(60000,function(i){
       $("div[id^=group_bar]").each(function(n){
@@ -93,8 +108,21 @@
    });
 
    $("#tabs").tabs();
+   $(function(){ 
+      $(".haccordion").haccordion(); 
+   }); 
   })
 //--------------------------End of document ready function------------------------------
+ function send_tweet(caller){
+       var twit_id = $("#send_tweet_twit_id").val()
+       var msg = $("#tweet_text").val()
+        $.post("../twits/send_tweet",{ twit_id : twit_id, msg : msg },function(data){
+         notify(data)
+        });
+        $("#tweet_text").val("")
+        $("#send_tweet_twit_id").val("")
+        return true
+ }
   function get_search_tweets(){
      var test_length=$("div[id^=search_]").length - 1
      $("div[id^=search_]").each(function(n){
@@ -222,4 +250,30 @@
         );
         return false;
      }
-
+// SeViR Simple Horizontal Accordion @2007
+// http://letmehaveblog.blogspot.com
+jQuery.fn.extend({
+  haccordion: function(params){
+    var jQ = jQuery;
+    var params = jQ.extend({
+      speed: 500,
+      headerclass: "header",
+      contentclass: "content",
+      contentwidth: 350
+    },params);
+    return this.each(function(){
+      jQ("."+params.headerclass,this).click(function(){
+        var p = jQ(this).parent()[0];
+        if (p.opened != "undefined"){
+          jQ(p.opened).next("div."+params.contentclass).animate({
+            width: "0px"
+          },params.speed);
+        }
+        p.opened = this;
+        jQ(this).next("div."+params.contentclass).animate({
+          width: params.contentwidth + "px"
+        }, params.speed);
+      });
+    });
+  }
+});

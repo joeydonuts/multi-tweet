@@ -109,4 +109,13 @@ end
 		["?",false,false]
         end	
   end
+  def post_tweet(msg)
+    begin
+      twitter=Twitter::Base.new(self.twitter_name, self.twitter_password)
+      twitter.update msg
+      "Message sent successfully."      
+    rescue Exception => e
+       "Failed to send message because #{e.to_s}"
+    end
+  end
 end

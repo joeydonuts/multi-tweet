@@ -30,4 +30,14 @@ class Twits < Application
      @twit_status=@twit.status(user_id)
       partial(:status)
   end
+  def send_tweet()
+    @twit=Twit.get(params[:twit_id])
+    if not @twit
+        @res="Can't make @twit"
+	partial(:tweet_result)
+    else
+      @res=@twit.post_tweet(params[:msg])
+      partial(:tweet_result)
+    end
+  end
 end

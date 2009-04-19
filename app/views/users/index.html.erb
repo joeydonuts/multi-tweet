@@ -8,41 +8,52 @@
         <% end %>
         <li><a href="#fragment_<%= count %>"><span>Searches</span></a></li>
     </ul>
-		  <%count = 1 %>  
+        <% count = 1 %>
         <% @twits.each do |twit| %>
         <div id="fragment_<%= count %>">
           <div id="group_bar_<%= twit.id %>" style="width: 100%;">
-		     <p><span style="color: red" id="remain_<%= twit.id %>"></span> <a href="#" id="dialog_link_group_add_<%= twit.id %>" class="ui-state-default ui-corner-all">Add Group</a></p>
-			</div>
+	<p><span style="color: red" id="remain_<%= twit.id %>"></span> <a href="#" id="dialog_link_group_add_<%= twit.id %>" class="ui-state-default ui-corner-all">Add Group</a>&nbsp;&nbsp;<a href="#" id="dialog_link_tweet_<%= twit.id %>" class="ui-state-default ui-corner-all">Tweet</a></p>
+	</div>
+         <div class="haccordion">
           <% twit.groups.each do |group| %>
+           <div class="header"><%= group.group_name %></div>
+            <div class="content">
            <div id="group_<%= twit.id %>_<%= group.group_name %>" class="group_display">              
             <p class="group_name"><%= group.group_name %></p>
                <table id="table_<%= twit.id %>_<%= group.group_name %>">
                <% group.readable_tweets(twit).each do |tweet| %>
-					<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %></td></tr>
+			<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
                <% end %>
                </table>
-			  </div>
+	  </div>
+          </div> <!-- div of content -->
           <% end %>
        <br clear="left"/>
+        </div> <!-- div for haccordian -->
         </div> <!-- div for fragment-->
-        <% count += 1 %>
+          <% count += 1 %>
        <% end %>
        <div id="fragment_<%= count %>">
          <div style="width: 100%;">
 	      <p><a href="#" id="dialog_link_search_add" class="ui-state-default ui-corner-all">Add Search</a></p>
          </div>
+         <div class="haccordion">
          <% @searches.each do |search| %>
+           <div class="header"><%= search.search_name %></div>
+               <div class="content">
            <div id="search_<%= search.id %>" class="group_display">              
             <p class="group_name"><%= search.search_name %></p>
                <table id="table_search_<%= search.id %>">
                <% search.readable_tweets(false).each do |tweet| %>
-		   <tr><td><img src="<%= tweet.first %>" height="32px" width="32px"/></td><td><%= tweet[1] %></td></tr>
+		   <tr><td><img src="<%= tweet.first %>" height="32px" width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
                <% end %>
               </table>
+	  </div>
+          </div> <!-- div of content -->
          <% end %>
-       </div>  <!--serarch fragment div -->
-		<br clear="left"/>
+       <br clear="left"/>
+        </div> <!-- div for haccordian -->
+       </div>  <!--search fragment div -->
     </div>
 </div>
 
@@ -58,4 +69,9 @@
    <p class="field_container"><%= text_field :search_name, :id => "search_name", :label => "Name for the Search: ", :value => "" -%></p>
    <p class="field_container"><%= text_field :search_term, :id => "search_term", :label => "Search Words: " -%></p>
 </div>
+<div  id="dialog_send_tweet" title="Send a Tweet">
+   <p class="field_container"><%= text_field :tweet_text, :id => "tweet_text", :label => "Tweet Text:", :size => "140", :maxlength => "140", :value => "" -%></p>
+   <%= hidden_field :name => "twit_id", :id => "send_tweet_twit_id", :value => "" %>
+</div>
+
 </div>      

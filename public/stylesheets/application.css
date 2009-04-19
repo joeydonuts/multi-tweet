@@ -99,7 +99,7 @@ border: solid thin white;
 float: left;
 padding-left: 10px;
 margin-left: 10px;
-width: 32%;
+width: 300px;
 }
 .group_banner{
 padding-left: 10px;
@@ -147,4 +147,26 @@ Notices
 .notice-bottom {
     height: 22px;
     background: url(../images/purrBottom.png) no-repeat left top;
-}
+/*---------------------------
+Horizontal Accordian
+-----------------------------*/}
+ .haccordion .header, .haccordion .content{ 
+  float: left; 
+ } 
+  
+ .haccordion .header{ 
+  width: 50px; 
+  background: #000; 
+  color: #fff; 
+  cursor: pointer; 
+ } 
+  
+ .haccordion .content{ 
+  display: none; 
+  width: 0px; 
+  overflow: auto; 
+ }
+  
+ .haccordion .content p{ 
+  margin: 5px; 
+ } 
