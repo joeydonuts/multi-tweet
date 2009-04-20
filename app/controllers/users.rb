@@ -19,7 +19,15 @@ class Users < Application
     @user = User.new
     display @user
   end
- 
+  def update()
+    @user = User.get(session.user.id)
+    @user.visual_notify = params[:visual_notify]
+    @user.audio_notify=params[:audio_notify]
+    @user.tweet_query_pct=params[:tweet_query_pct]
+    @user.tweets_displayed = params[:tweets_displayed]
+    @user.save
+    partial(:update)
+  end 
  def create()
     user=params[:user]
     @user = User.new(user)

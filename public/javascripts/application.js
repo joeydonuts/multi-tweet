@@ -90,6 +90,33 @@
 	});
    });
 */
+//---------function for saving preferences---------------
+$("#save_group").click(function(){
+  var rm_visual_notify=false
+  if($('#visual_notify').attr('checked') == true){
+     rm_visual_notify=true
+  }
+  var rm_audio_notify=false
+  if($('#audio_notify').attr('checked') == true){
+    rm_audio_notify=true
+  }
+  var rm_tweet_query_pct=isNumeric($('#tweet_query_pct').val())
+  if(rm_tweet_query_pct == false || rm_tweet_query_pct > 100 || rm_tweet_query_pct < 0){
+      notify("<div style='color: red'>Percent Allocated to tweet queries must be a number greater than 0  and less than 100</div>")
+	return false
+  }
+  var rm_tweets_displayed=isNumeric($('#tweets_displayed').val())
+  if(rm_tweets_displayed == false ||  rm_tweets_displayed < 0){
+      notify("<div style='color: red'>Tweets displayed must be a number greater than 0<div>")
+      return false
+  }
+  $.post("../users/update",{ visual_notify : rm_visual_notify, audio_notify : rm_audio_notify, tweet_query_pct : rm_tweet_query_pct, tweets_displayed : rm_tweets_displayed },
+  function(data){
+    notify(data)
+  })
+})
+
+//---------Function for updating tweets every minute-------------------
    $("#user_display").everyTime(60000,function(i){
       $("div[id^=group_bar]").each(function(n){
           var twit_id=this.id.split(/_/)[2]
@@ -106,6 +133,12 @@
           });
       });
    });
+//-----Functionn for character counting of tweet-----
+   $("#tweet_text").keyup(function(){
+     var rem_chars = 140 - $(this).val().length;
+     $("#tweet_counter").html(rem_chars + ' characters left')
+   })
+   
 
    $("#tabs").tabs();
    $(function(){ 
@@ -117,10 +150,11 @@
        var twit_id = $("#send_tweet_twit_id").val()
        var msg = $("#tweet_text").val()
         $.post("../twits/send_tweet",{ twit_id : twit_id, msg : msg },function(data){
-         notify(data)
+         notify(data);
         });
-        $("#tweet_text").val("")
-        $("#send_tweet_twit_id").val("")
+        $("#tweet_text").val("");
+        $("#send_tweet_twit_id").val("");
+        $("#tweet_counter").html('140 characters left');
         return true
  }
   function get_search_tweets(){
@@ -228,6 +262,14 @@
 			return test
       }
       return false
+    }
+    function isNumeric(val){
+      if(isNaN(parseInt(val))){
+	return false
+      }
+      else{
+	return parseInt(val)
+      }
     }
     function reset_group_dialog(){
 	$("#group_name").val('')

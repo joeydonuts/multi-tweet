@@ -70,7 +70,8 @@
    <p class="field_container"><%= text_field :search_term, :id => "search_term", :label => "Search Words: " -%></p>
 </div>
 <div  id="dialog_send_tweet" title="Send a Tweet">
-   <p class="field_container"><%= text_field :tweet_text, :id => "tweet_text", :label => "Tweet Text:", :size => "140", :maxlength => "140", :value => "" -%></p>
+  <p class="field_container"><span id="tweet_counter">140 characters left</span>
+   <p class="field_container"><%= text_area "", :id => "tweet_text", :label => "Tweet Text:  ", :rows => "5", :cols => "28" -%></p>
    <%= hidden_field :name => "twit_id", :id => "send_tweet_twit_id", :value => "" %>
 </div>
 
