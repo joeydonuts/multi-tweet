@@ -42,14 +42,15 @@ class Search
     rescue Exception => e
     end
   end
-  def readable_tweets(reset=false)
+  def readable_tweets(user_id, reset=false)
       a_res=[]
       self.searchtweets.each do |tweet|
-	  a_res <<[tweet.image_url, tweet.message, tweet.sent_date.to_s]
+	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s]
       end
       if reset
-          self.user.new_search_treats=false
-          self.user.save
+          user=User.get(user_id)
+          user.new_search_tweets=false
+          user.save
       end
       a_res.sort!{|a,b| b[2] <=> a[2]}
       return a_res[0...self.user.tweets_displayed] 

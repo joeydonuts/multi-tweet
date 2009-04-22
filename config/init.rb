@@ -23,6 +23,4 @@ end
  
 Merb::BootLoader.after_app_loads do
   # This will get executed after your app's classes have been loaded.
-   require Merb::Config[:merb_root] + '/tweet_poller.rb'
-   Tweet_poller.start
 end

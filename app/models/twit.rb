@@ -26,9 +26,8 @@ class Twit
   end
   def get_tweets()
      twitter=Twitter::Base.new(self.twitter_name, self.twitter_password)
-     return true if twitter.rate_limit_status.remaining_hits.to_i == 0
-     
      begin
+       return true if twitter.rate_limit_status.remaining_hits.to_i == 0
        messages=twitter.timeline( :friends, :since_id => self.last_id)
        unless messages.empty?
          self.last_id = messages[0].id
@@ -106,7 +105,7 @@ end
         begin
      	  twitter = Twitter::Base.new( self.twitter_name,self.twitter_password )
           user=User.get(user_id)
-	  [twitter.rate_limit_status.remaining_hits, self.new_tweets]
+	  [twitter.rate_limit_status.remaining_hits, self.new_tweets, user.new_search_tweets, user.visual_notify, user.audio_notify]
         rescue
 		["?",false,false]
         end	

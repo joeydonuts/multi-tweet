@@ -10,7 +10,8 @@ class Searches < Application
   end  
   def get_new_searches()
     @search=Search.get(params[:search_id])
-    @search_tweets=@search.readable_tweets(params[:reset])
+    user_id=session.user.id
+    @search_tweets=@search.readable_tweets(user_id, params[:reset])
     partial(:new_searches)
   end
 end

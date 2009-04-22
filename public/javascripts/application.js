@@ -118,6 +118,7 @@ $("#save_group").click(function(){
 
 //---------Function for updating tweets every minute-------------------
    $("#user_display").everyTime(60000,function(i){
+      var notified = false
       $("div[id^=group_bar]").each(function(n){
           var twit_id=this.id.split(/_/)[2]
           $.post("../twits/get_status",{ twit_id : twit_id }, function(data){
@@ -125,17 +126,29 @@ $("#save_group").click(function(){
              a_res=eval(data)
              $(span_id).text(a_res[0])
              if(a_res[1]){
+                if(!notified){
+                  alert_new_tweets(a_res[3],a_res[4])
+                  notified=true
+		}
 		get_group_tweets(twit_id)
              }
              if(a_res[2]){
+                if(!notified){
+                  alert_new_tweets(a_res[3],a_res[4])
+                  notified=true;
+                }
 		get_search_tweets()
-	     } 
+	     }
           });
       });
    });
 //-----Functionn for character counting of tweet-----
    $("#tweet_text").keyup(function(){
      var rem_chars = 140 - $(this).val().length;
+     if(rem_chars < 0){
+        rem_chars = 0
+        $(this).val($(this).val().substr(0,140))
+    }
      $("#tweet_counter").html(rem_chars + ' characters left')
    })
    
@@ -146,6 +159,14 @@ $("#save_group").click(function(){
    }); 
   })
 //--------------------------End of document ready function------------------------------
+function alert_new_tweets(visual,audio){
+  if(visual){
+     notify("New tweets available")
+  }
+  if(audio){
+     $.sound.play("/callbell.mp3")
+  }
+}
  function send_tweet(caller){
        var twit_id = $("#send_tweet_twit_id").val()
        var msg = $("#tweet_text").val()
@@ -160,7 +181,7 @@ $("#save_group").click(function(){
   function get_search_tweets(){
      var test_length=$("div[id^=search_]").length - 1
      $("div[id^=search_]").each(function(n){
- 	var search_id = this.id.spplit(/_/)[1]
+ 	var search_id = this.id.split(/_/)[1]
         if(n == test_length){
           var vars={ search_id : search_id, reset : 1 }
         }

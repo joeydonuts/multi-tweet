@@ -4,8 +4,8 @@
         <li><a href="#fragment-2"><span>Twitter Users</span></a></li>
     </ul>
     <div id="fragment-1">
-        <p><%= check_box :id => "visual_notify", :value =>  @user.visual_notify, :label => "visual notify" %></p>
-        <p><%= check_box :id => "audio_notify", :value =>  @user.audio_notify, :label => "audio notify" %></p>
+        <p><%= check_box :id => "visual_notify",  :checked => @user.visual_notify, :label => "visual notify" %></p>
+        <p><%= check_box :id => "audio_notify", :checked =>  @user.audio_notify, :label => "audio notify" %></p>
         <p><%= text_field :tweet_query_pct, :id => "tweet_query_pct", :value =>  @user.tweet_query_pct, :label => "Percent of time allocated to tweet queries max(100)" %></p>
         <p><%= text_field :tweets_displayed, :id => "tweets_displayed", :value =>  @user.tweets_displayed, :label => "Number of tweets displayed" %></p>
         <p><%= button "Save General Settings", :id => "save_group" %></p>
