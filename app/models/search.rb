@@ -19,14 +19,18 @@ class Search
     default_per_page=49
     query=self.search_terms.gsub(/\s/,'+')
     begin
+    a_res=[]
     1.upto(max_page_number) do |page_number|
-     count=0
       Twitter::Search.new(query).since(self.last_id).per_page(default_per_page).page(page_number).each do |msg|
-         self.last_id = msg.id if count == 0
-         self.user.new_search_tweets = true if count == 0
-         self.user.save if count == 0
-         self.save
-         count += 1
+         a_res << msg
+      end
+    end
+    return true if a_res.empty?
+    self.last_id = a_res[0].id
+    user.new_search_tweets = true
+    user.save
+    self.save
+    a_res.each do |msg|
          msg.text =~ /\s(http[^\s]+)/
          if $1
             sub=$1.dup
@@ -34,25 +38,27 @@ class Search
          else
 				msg_save=msg.text
          end
-          st=Searchtweet.new(:search_id => self.id, :message => msg_save, 
-          :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:$S"),:sender => msg.from_user, :image_url => msg.profile_image_url)
-          st.save
-      end
+         st=Searchtweet.new(:search_id => self.id, :message => msg_save, 
+         :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:$S"),:sender => msg.from_user, :image_url => msg.profile_image_url)
+         st.save
     end
     rescue Exception => e
     end
+    return true    
   end
   def readable_tweets(user_id, reset=false)
       a_res=[]
-      self.searchtweets.each do |tweet|
+      user=User.get(user_id)
+      z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc])
+      z.each do |tweet|
 	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s]
       end
       if reset
-          user=User.get(user_id)
           user.new_search_tweets=false
           user.save
       end
-      a_res.sort!{|a,b| b[2] <=> a[2]}
-      return a_res[0...self.user.tweets_displayed] 
+      #a_res.sort!{|a,b| b[2] <=> a[2]}
+      #return a_res[0...self.user.tweets_displayed]
+      a_res 
   end
 end

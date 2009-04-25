@@ -127,15 +127,15 @@ $("#save_group").click(function(){
              $(span_id).text(a_res[0])
              if(a_res[1]){
                 if(!notified){
-                  alert_new_tweets(a_res[3],a_res[4])
                   notified=true
+                  alert_new_tweets(a_res[3],a_res[4])
 		}
 		get_group_tweets(twit_id)
              }
-             if(a_res[2]){
+             if(a_res[2] && n == 0){
                 if(!notified){
-                  alert_new_tweets(a_res[3],a_res[4])
                   notified=true;
+                  alert_new_tweets(a_res[3],a_res[4])
                 }
 		get_search_tweets()
 	     }
@@ -199,15 +199,15 @@ function alert_new_tweets(visual,audio){
       var test_length=$(test).length - 1
       $(test).each(function(n){
          var group_name=this.id.split(/_/)[2]
-
          if(n==test_length){
 		var vars={group_name : group_name, twit_id : twit_id, reset : 1 }
          }
          else{
     		var vars={ group_name : group_name, twit_id : twit_id }
          }
+         var identifier=group_name.replace(/\s/g,'-');
          $.post("../groups/get_group_tweets", vars, function(data){
-           tableID="#table_" + twit_id + "_" + group_name + " tbody"
+           tableID="#table_" + twit_id + "_" + identifier + " tbody"
            $(tableID).html(data)  
 	});
       });

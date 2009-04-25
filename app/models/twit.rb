@@ -14,16 +14,7 @@ class Twit
   has n, :friends
   has n, :groups
   has n, :followers
-  has n, :searches
 
-  def groups()
-    group_array=[]
-    self.friends.groups.each do |item|
-       group_array << item.group
-    end
-    group_array.uniq! unless group_array.empty?
-    group_array
-  end
   def get_tweets()
      twitter=Twitter::Base.new(self.twitter_name, self.twitter_password)
      begin

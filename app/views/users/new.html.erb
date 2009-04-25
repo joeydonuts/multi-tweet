@@ -4,9 +4,10 @@
       <%= error_messages_for @user %>
  </div>
   <%= form_for(@user, :action => resource(:users)) do -%>
-    <p class="field_container"><%= text_field :login, :label => "Username: " -%></p>
+    <p class="field_container"><%= text_field :login, :id => 'signup_username', :label => "Username: " -%></p>
     <p class="field_container"><%= password_field :password, :label => "Password: " -%></p>
     <p class="field_container"><%= password_field :password_confirmation, :label => "Confirm Password: " -%></p>
     <p class="field_container"><%= submit "Signup" -%></p>
   <%- end =%>
+  <script language='javascript'>$("#signup_username").focus()</script>
 </div>
