@@ -16,7 +16,7 @@ class Twit
   has n, :followers
 
   def get_tweets()
-     twitter=Twitter::Base.new(self.twitter_name, self.twitter_password)
+     twitter= make_twitter
      begin
        return true if twitter.rate_limit_status.remaining_hits.to_i == 0
        messages=twitter.timeline( :friends, :since_id => self.last_id)
@@ -57,8 +57,8 @@ class Twit
   end
   def get_friends()
     begin
-    	twitter = Twitter::Base.new( self.twitter_name,self.twitter_password )
-    	friends = twitter.friends()
+      twitter=make_twitter
+      friends = twitter.friends()
       followers = twitter.followers()
     rescue Exception => e
       return "and could not query for friends and/or followers #{e.to_s}"
@@ -97,8 +97,8 @@ class Twit
      return "and friends friends images and followers saved successfully"
 end
   def status(user_id)
-        begin
-     	  twitter = Twitter::Base.new( self.twitter_name,self.twitter_password )
+        begin		
+     	  twitter = make_twitter
           user=User.get(user_id)
 	  [twitter.rate_limit_status.remaining_hits, self.new_tweets, user.new_search_tweets, user.visual_notify, user.audio_notify, user.tweets_displayed]
         rescue
@@ -107,11 +107,15 @@ end
   end
   def post_tweet(msg)
     begin
-      twitter=Twitter::Base.new(self.twitter_name, self.twitter_password)
+      twitter=make_twitter
       twitter.update msg
       "Message sent successfully."      
     rescue Exception => e
        "Failed to send message because #{e.to_s}"
     end
   end
+private
+    def make_twitter()
+      Twitter::Base.new(self.twitter_name, self.twitter_password)
+    end
 end
