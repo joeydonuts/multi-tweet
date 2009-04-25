@@ -9,6 +9,7 @@ class Search
   property :search_terms, String
   property :seconds_since_last, Integer, :default => 0
   property :search_interval, Integer, :default => 900
+  property :last_retrieve_id, Integer, :default => 0
 
   has n, :searchtweets
   belongs_to :user
@@ -46,10 +47,14 @@ class Search
     end
     return true    
   end
-  def readable_tweets(user_id, reset=false)
+  def readable_tweets(user_id, reset=false, startup=false)
       a_res=[]
       user=User.get(user_id)
-      z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc])
+        z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc])
+      if startup
+      else
+        z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc], :id.gt => self.last_retrieve_id)
+      end
       z.each do |tweet|
 	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s]
       end
@@ -57,8 +62,10 @@ class Search
           user.new_search_tweets=false
           user.save
       end
-      #a_res.sort!{|a,b| b[2] <=> a[2]}
-      #return a_res[0...self.user.tweets_displayed]
+      unless a_res.empty?
+	self.last_retrieve_id = z.first.id 
+        self.save
+      end
       a_res 
   end
 end

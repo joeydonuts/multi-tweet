@@ -22,14 +22,14 @@ class Twit
        messages=twitter.timeline( :friends, :since_id => self.last_id)
        unless messages.empty?
          self.last_id = messages[0].id
-         self.new_tweets = true
-         self.save
        end
      rescue Exception => e
      end
      begin
+     stored_count = 0
      messages.each do |msg|
          next if self.twitter_name == msg.user.screen_name
+         stored_count += 1
          f=Friend.first(:twitter_name => msg.user.screen_name, :twit_id => self.id)
          if not f
            f=Friend.new(:twitter_name => msg.user.screen_name, :twit_id => self.id)
@@ -48,7 +48,11 @@ class Twit
          t.save
      end
      rescue Exception => e
-     end 
+     end
+     if stored_count > 0
+         self.new_tweets = true
+         self.save
+     end
      return true
   end
   def get_friends()
@@ -96,7 +100,7 @@ end
         begin
      	  twitter = Twitter::Base.new( self.twitter_name,self.twitter_password )
           user=User.get(user_id)
-	  [twitter.rate_limit_status.remaining_hits, self.new_tweets, user.new_search_tweets, user.visual_notify, user.audio_notify]
+	  [twitter.rate_limit_status.remaining_hits, self.new_tweets, user.new_search_tweets, user.visual_notify, user.audio_notify, user.tweets_displayed]
         rescue
 		["?",false,false]
         end	

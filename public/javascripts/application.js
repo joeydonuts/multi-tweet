@@ -130,14 +130,14 @@ $("#save_group").click(function(){
                   notified=true
                   alert_new_tweets(a_res[3],a_res[4])
 		}
-		get_group_tweets(twit_id)
+		get_group_tweets(twit_id,a_res[5])
              }
              if(a_res[2] && n == 0){
                 if(!notified){
                   notified=true;
                   alert_new_tweets(a_res[3],a_res[4])
                 }
-		get_search_tweets()
+		get_search_tweets(a_res[5])
 	     }
           });
       });
@@ -178,10 +178,11 @@ function alert_new_tweets(visual,audio){
         $("#tweet_counter").html('140 characters left');
         return true
  }
-  function get_search_tweets(){
+  function get_search_tweets(display_num){
      var test_length=$("div[id^=search_]").length - 1
      $("div[id^=search_]").each(function(n){
  	var search_id = this.id.split(/_/)[1]
+        var parent_div_id="search_" + search_id
         if(n == test_length){
           var vars={ search_id : search_id, reset : 1 }
         }
@@ -189,12 +190,24 @@ function alert_new_tweets(visual,audio){
 	  var vars={ search_id : search_id}
         }
         $.post("../searches/get_new_searches",vars,function(data){
+           if(data.match(/^noting/)){
+		return false
+           }
            tableID="#table_search_" + search_id + " tbody"
-           $(tableID).html(data) 
+           $(tableID).prepend(data)
+           var limit=display_num - 1
+           $(tableID).find("tr:gt(" + limit + ")").remove()
+           test_name=$("#" + parent_div_id).find("p:eq(0)").html()
+           $(".header").each(function(){
+		if($(this).html()==test_name){
+		   $(this).css("color", 'red')
+                }
+            })
+             
         });
      });
   }
-  function get_group_tweets(twit_id){
+  function get_group_tweets(twit_id,display_num){
       var test="div[id^=group_" + twit_id + "]"
       var test_length=$(test).length - 1
       $(test).each(function(n){
@@ -207,8 +220,18 @@ function alert_new_tweets(visual,audio){
          }
          var identifier=group_name.replace(/\s/g,'-');
          $.post("../groups/get_group_tweets", vars, function(data){
+           if(data.match(/^nothing/)){
+		return false
+           }
            tableID="#table_" + twit_id + "_" + identifier + " tbody"
-           $(tableID).html(data)  
+           $(tableID).prepend(data)
+           var limit=display_num - 1
+           $(tableID).find("tr:gt(" + limit + ")").remove()
+           $(".header").each(function(){
+		if($(this).html()==group_name){
+		   $(this).css("color", 'red')
+                }
+            })
 	});
       });
   }
@@ -326,6 +349,7 @@ jQuery.fn.extend({
     },params);
     return this.each(function(){
       jQ("."+params.headerclass,this).click(function(){
+       $(this).css('color','blue')
         var p = jQ(this).parent()[0];
         if (p.opened != "undefined"){
           jQ(p.opened).next("div."+params.contentclass).animate({

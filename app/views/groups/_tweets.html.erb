@@ -1,3 +1,7 @@
-<% @tweets.each do |tweet| %>
+<% if @tweets.empty? %>
+nothing
+<% else %>
+  <% @tweets.each do |tweet| %>
 	<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+  <% end %>
 <% end %>

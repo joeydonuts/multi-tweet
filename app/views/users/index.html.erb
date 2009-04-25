@@ -21,7 +21,7 @@
            <div id="group_<%= twit.id %>_<%= group.group_name %>" class="group_display">              
             <p class="group_name"><%= group.group_name %></p>
                <table id="table_<%= twit.id %>_<%= group.group_name.gsub(/\s/,"-") %>">
-               <% group.readable_tweets(twit).each do |tweet| %>
+               <% group.readable_tweets(twit,true,true).each do |tweet| %>
 			<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
                <% end %>
                </table>
@@ -44,7 +44,7 @@
            <div id="search_<%= search.id %>" class="group_display">              
             <p class="group_name"><%= search.search_name %></p>
                <table id="table_search_<%= search.id %>">
-               <% search.readable_tweets(session.user.id,false).each do |tweet| %>
+               <% search.readable_tweets(session.user.id,false,true).each do |tweet| %>
 		   <tr><td><img src="<%= tweet.first %>" height="32px" width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
                <% end %>
               </table>
