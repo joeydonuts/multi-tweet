@@ -40,7 +40,8 @@ class Search
 				msg_save=msg.text
          end
          st=Searchtweet.new(:search_id => self.id, :message => msg_save, 
-         :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:$S"),:sender => msg.from_user, :image_url => msg.profile_image_url)
+         :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:$S"),
+         :sender => msg.from_user, :image_url => msg.profile_image_url, :twitter_id => msg.id)
          st.save
     end
     rescue Exception => e
@@ -50,13 +51,13 @@ class Search
   def readable_tweets(user_id, reset=false, startup=false)
       a_res=[]
       user=User.get(user_id)
-        z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc])
       if startup
+        z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc])
       else
         z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc], :id.gt => self.last_retrieve_id)
       end
       z.each do |tweet|
-	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s]
+	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s, tweet.twitter_id]
       end
       if reset
           user.new_search_tweets=false

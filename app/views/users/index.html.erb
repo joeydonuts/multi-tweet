@@ -15,14 +15,24 @@
 	<p><span style="color: red" id="remain_<%= twit.id %>"></span> <a href="#" id="dialog_link_group_add_<%= twit.id %>" class="ui-state-default ui-corner-all">Add Group</a>&nbsp;&nbsp;<a href="#" id="dialog_link_tweet_<%= twit.id %>" class="ui-state-default ui-corner-all">Tweet</a></p>
 	</div>
          <div class="haccordion">
+          <% header_count = 1 -%>
+          <div class="headercontainer">
           <% twit.groups.each do |group| %>
-           <div class="header"><%= group.group_name %></div>
-            <div class="content">
-           <div id="group_<%= twit.id %>_<%= group.group_name %>" class="group_display">              
-            <p class="group_name"><%= group.group_name %></p>
+           <div class="header" id="header_<%= header_count -%>"><%= group.group_name %></div>
+            <% header_count += 1 -%>
+          <% end %>
+          </div> 
+           <% content_count = 1 -%>
+          <% twit.groups.each do |group| %>
+            <div class="content" id="content_<%=content_count -%>">
+           <% content_count +=1 -%>
+           <div id="group_<%= twit.id %>_<%= group.group_name.gsub(/\s/,'-') %>" class="group_display">              
+            <p class="group_name"><%= group.group_name %>
+            <%= link_to "Edit", "", :class => "group_name", :id => "edit_group_#{group.group_name.gsub(/\s/,'-')}" %>
+             <%= link_to "Delete", "", :class => "group_name", :id => "delete_group_#{group.group_name.gsub(/\s/,'-')}" %></p>
                <table id="table_<%= twit.id %>_<%= group.group_name.gsub(/\s/,"-") %>">
                <% group.readable_tweets(twit,true,true).each do |tweet| %>
-			<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+			<tr><td><img src="<%= tweet.first %>" id="<%= tweet.last %>" class="twitter_icon" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
                <% end %>
                </table>
 	  </div>
@@ -38,14 +48,25 @@
 	      <p><a href="#" id="dialog_link_search_add" class="ui-state-default ui-corner-all">Add Search</a></p>
          </div>
          <div class="haccordion">
+         <% header_count = 1 %>
+         <div class="headercontainer">
          <% @searches.each do |search| %>
-           <div class="header"><%= search.search_name %></div>
-               <div class="content">
+           <div class="header" id="header_<%= header_count %>"><%= search.search_name %></div>
+           <% header_count += 1 -%>
+         <% end -%>
+         </div>
+         <% content_count = 1 %>
+         <% @searches.each do |search| %>
+               <div class="content" id="content_<%= content_count -%>">
+               <% content_count += 1 %>
            <div id="search_<%= search.id %>" class="group_display">              
-            <p class="group_name"><%= search.search_name %></p>
+            <p class="group_name"><%= search.search_name %>
+            <%= link_to "Edit", "", :class => "group_name", :id => "edit_search_#{search.id}" %>
+             <%= link_to "Delete", "", :class => "group_name", :id => "delete_search_#{search.id}" %></p>
+            </p>
                <table id="table_search_<%= search.id %>">
                <% search.readable_tweets(session.user.id,false,true).each do |tweet| %>
-		   <tr><td><img src="<%= tweet.first %>" height="32px" width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+		   <tr><td><img src="<%= tweet.first %>" id="<%= tweet.last -%>" class="twitter_icon" height="32px" width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
                <% end %>
               </table>
 	  </div>
@@ -74,5 +95,17 @@
    <p class="field_container"><%= text_area "", :id => "tweet_text", :label => "Tweet Text:  ", :rows => "5", :cols => "28" -%></p>
    <%= hidden_field :name => "twit_id", :id => "send_tweet_twit_id", :value => "" %>
 </div>
+<div id="dialog_search_edit" title="Edit Search">
+   <p class="field_container"><%= text_field :search_name, :id => "edit_search_name", :label => "Name for the Search: ", :value => "" -%></p>
+   <p class="field_container"><%= text_field :search_term, :id => "edit_search_term", :label => "Search Words: " -%></p>
+</div>
+<div id="dialog_twitter_group_edit" title="Edit Group">
+   <%= hidden_field :name => "edit_twit_id", :id => "edit_group_twit_id", :value => "" %>
+   <p class="field_container"><%= text_field :edit_group_name, :id => "edit_group_name", :label => "Name for the Group:", :value => "" -%></p>
+    <p>Select the friends for this group</p>
+    <div id="edit_group_friend_list">
+    </div>
+</div>      
+
 
 </div>      

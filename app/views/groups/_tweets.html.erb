@@ -2,6 +2,6 @@
 nothing
 <% else %>
   <% @tweets.each do |tweet| %>
-	<tr><td><img src="<%= tweet.first %>" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+	<tr><td><img src="<%= tweet.first %>" id="<%= tweet.last -%>" class="twitter_icon" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
   <% end %>
 <% end %>

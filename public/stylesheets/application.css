@@ -109,6 +109,7 @@ border: solid thin red;
 color: red;
 border: solid thin yellow;
 padding-left: 10px;
+padding-right: 10px;
 margin-right: 10px;
 }
 
@@ -150,15 +151,17 @@ Notices
 /*---------------------------
 Horizontal Accordian
 -----------------------------*/}
- .haccordion .header, .haccordion .content{ 
-  float: left; 
+ .haccordion .headercontainer, .haccordion .content{ 
+  float: left;
+  margin-bottom: 30px; 
  } 
   
  .haccordion .header{ 
-  width: 60px; 
-  font-size: 75%;
+  width: 90px; 
+  font-size: 93%;
   background: #000; 
   color: blue; 
+  margin-bottom: 10px;
   cursor: pointer; 
  } 
   

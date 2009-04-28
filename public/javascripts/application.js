@@ -11,8 +11,7 @@
         $(this).dialog("close");
     }
    }
-   }
-    );
+   });
    $('#dialog_link').click(function(){
 		$('#dialog').dialog('open');
 		return false;
@@ -81,6 +80,7 @@
 	 $('#dialog_send_tweet').dialog('open');
 	 return false;
 	});
+    
 
 /*
    $("a[id^='twitter_dialog']").livequery(function(){
@@ -114,8 +114,39 @@ $("#save_group").click(function(){
   function(data){
     notify(data)
   })
-})
+}
+)
 
+    $("#dialog_search_edit").dialog({
+     autoOpen: false,
+     buttons: {
+        "Save": function() {
+    },
+	 "Cancel": function() {
+        $(this).dialog("close");
+    }
+   }
+   });
+
+   $("a[id^='edit_search_']").click(function(){
+	 $('#dialog_search_edit').dialog('open');
+    });
+    
+
+    $("#dialog_twitter_group_edit").dialog({
+     autoOpen: false,
+     buttons: {
+        "Save": function() {
+    },
+	 "Cancel": function() {
+        $(this).dialog("close");
+    }
+   }
+   });
+
+   $("a[id^=edit_group_]").click(function(){
+	 $('#dialog_twitter_group_edit').dialog('open');
+    });
 //---------Function for updating tweets every minute-------------------
    $("#user_display").everyTime(60000,function(i){
       var notified = false
@@ -190,16 +221,17 @@ function alert_new_tweets(visual,audio){
 	  var vars={ search_id : search_id}
         }
         $.post("../searches/get_new_searches",vars,function(data){
-           if(data.match(/^noting/)){
+           if(data.match(/^nothing/)){
 		return false
            }
            tableID="#table_search_" + search_id + " tbody"
            $(tableID).prepend(data)
            var limit=display_num - 1
            $(tableID).find("tr:gt(" + limit + ")").remove()
-           test_name=$("#" + parent_div_id).find("p:eq(0)").html()
+           var test_name=$("#" + parent_div_id).find("p:eq(0)").html()
            $(".header").each(function(){
-		if($(this).html()==test_name){
+                var test_regex=new RegExp($(this).html())
+		if(test_name.match(test_regex)!=null){
 		   $(this).css("color", 'red')
                 }
             })
@@ -211,7 +243,7 @@ function alert_new_tweets(visual,audio){
       var test="div[id^=group_" + twit_id + "]"
       var test_length=$(test).length - 1
       $(test).each(function(n){
-         var group_name=this.id.split(/_/)[2]
+         var group_name=this.id.split(/_/)[2].replace(/\_/,' ')
          if(n==test_length){
 		var vars={group_name : group_name, twit_id : twit_id, reset : 1 }
          }
@@ -349,15 +381,19 @@ jQuery.fn.extend({
     },params);
     return this.each(function(){
       jQ("."+params.headerclass,this).click(function(){
-       $(this).css('color','blue')
-        var p = jQ(this).parent()[0];
-        if (p.opened != "undefined"){
-          jQ(p.opened).next("div."+params.contentclass).animate({
+       jQ(this).css('color','blue')
+        var p = jQ(this).parent().parent()[0];
+        var id_val="_" + jQ(this).attr('id').split('_').pop()
+        var related_content=jQ(this).parent().nextAll("div#" + params.contentclass + id_val)
+        if (p.opened ){
+         var id_val_opened = "_" + jQ(p.opened).attr('id').split('_').pop() 
+          
+         jQ(p.opened).parent().nextAll("div#"+params.contentclass + id_val_opened).animate({
             width: "0px"
-          },params.speed);
+         },params.speed);
         }
         p.opened = this;
-        jQ(this).next("div."+params.contentclass).animate({
+          related_content.animate({
           width: params.contentwidth + "px"
         }, params.speed);
       });
