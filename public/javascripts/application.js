@@ -243,7 +243,7 @@ function alert_new_tweets(visual,audio){
       var test="div[id^=group_" + twit_id + "]"
       var test_length=$(test).length - 1
       $(test).each(function(n){
-         var group_name=this.id.split(/_/)[2].replace(/\_/,' ')
+         var group_name=this.id.split(/_/)[2].replace(/\-/,' ')
          if(n==test_length){
 		var vars={group_name : group_name, twit_id : twit_id, reset : 1 }
          }
