@@ -41,7 +41,7 @@ class Search
          end
          st=Searchtweet.new(:search_id => self.id, :message => msg_save, 
          :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:$S"),
-         :sender => msg.from_user, :image_url => msg.profile_image_url, :twitter_id => msg.id)
+         :from_user => msg.from_user, :image_url => msg.profile_image_url, :twitter_id => msg.id)
          st.save
     end
     rescue Exception => e
@@ -57,7 +57,7 @@ class Search
         z=self.searchtweets.all(:limit => user.tweets_displayed, :deleted_at => nil,:order => [:sent_date.desc], :id.gt => self.last_retrieve_id)
       end
       z.each do |tweet|
-	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s, tweet.twitter_id]
+	  a_res << [tweet.image_url, tweet.message, tweet.sent_date.to_s, tweet.twitter_id, tweet.from_user]
       end
       if reset
           user.new_search_tweets=false

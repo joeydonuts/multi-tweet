@@ -29,11 +29,16 @@
            <div id="group_<%= twit.id %>_<%= group.group_name.gsub(/\s/,'-') %>" class="group_display">              
             <p class="group_name"><%= group.group_name %>
             <%= link_to "Edit", "", :class => "group_name", :id => "edit_group_#{group.group_name.gsub(/\s/,'-')}" %>
-             <%= link_to "Delete", "", :class => "group_name", :id => "delete_group_#{group.group_name.gsub(/\s/,'-')}" %></p>
+             <%= link_to "Delete", "", :class => "group_name", :id => "delete_group_#{group.id}" %></p>
+               <% table_counter = 0 -%>
                <table id="table_<%= twit.id %>_<%= group.group_name.gsub(/\s/,"-") %>">
                <% group.readable_tweets(twit,true,true).each do |tweet| %>
-			<tr><td><img src="<%= tweet.first %>" id="<%= tweet.last %>" class="twitter_icon" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+			<tr><td><img src="<%= tweet.first %>" id="<%=tweet[3] -%>_<%= tweet.last %>" class="twitter_icon" height="32px", width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+               <% table_counter += 1 -%>
                <% end %>
+               <% if table_counter == 0 -%>
+		<tr><td></td><td></td></tr>
+               <% end -%>
                </table>
 	  </div>
           </div> <!-- div of content -->
@@ -64,10 +69,15 @@
             <%= link_to "Edit", "", :class => "group_name", :id => "edit_search_#{search.id}" %>
              <%= link_to "Delete", "", :class => "group_name", :id => "delete_search_#{search.id}" %></p>
             </p>
+               <% table_counter = 0 -%>
                <table id="table_search_<%= search.id %>">
                <% search.readable_tweets(session.user.id,false,true).each do |tweet| %>
-		   <tr><td><img src="<%= tweet.first %>" id="<%= tweet.last -%>" class="twitter_icon" height="32px" width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+		   <tr><td><img src="<%= tweet.first %>" id="<%= tweet[3] -%>_<%= tweet.last -%>" class="twitter_icon" height="32px" width="32px"/></td><td><%= tweet[1] %>--<%= tweet[2] %></td></tr>
+               <% table_counter += 1 -%>
                <% end %>
+               <% if table_counter == 0 -%>
+		  <tr><td></td><td></td></tr>
+               <% end -%>
               </table>
 	  </div>
           </div> <!-- div of content -->
@@ -99,13 +109,11 @@
    <p class="field_container"><%= text_field :search_name, :id => "edit_search_name", :label => "Name for the Search: ", :value => "" -%></p>
    <p class="field_container"><%= text_field :search_term, :id => "edit_search_term", :label => "Search Words: " -%></p>
 </div>
-<div id="dialog_twitter_group_edit" title="Edit Group">
-   <%= hidden_field :name => "edit_twit_id", :id => "edit_group_twit_id", :value => "" %>
-   <p class="field_container"><%= text_field :edit_group_name, :id => "edit_group_name", :label => "Name for the Group:", :value => "" -%></p>
-    <p>Select the friends for this group</p>
-    <div id="edit_group_friend_list">
-    </div>
-</div>      
-
-
+<div id="dialog_search_delete" title="Delete Search">
+   <p>Delete this search?</p>
+   <%= hidden_field :name => "hidden_delete_search_id", :id => "hidden_delete_search_id", :value => "" %>
+</div>
+<div id="dialog_twitter_group_delete" title="Delete Group">
+    <p>Delete this group?</p>
+   <%= hidden_field :name => "hidden_delete_group_id", :id => "hidden_delete_group_id", :value => "" %>
 </div>      

@@ -17,7 +17,7 @@ class Group
     end
     z.each do |tweet|
        url=tweet.friend.image.url
-       a_res << [url, tweet.message, tweet.sent_date.to_s, tweet.twitter_id]
+       a_res << [url, tweet.message, tweet.sent_date.to_s, tweet.twitter_id, tweet.from_user]
     end
     unless a_res.empty?
       self.last_retrieve_id = z.first.id

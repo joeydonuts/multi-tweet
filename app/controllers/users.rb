@@ -41,7 +41,7 @@ class Users < Application
 def show()
    @user=session.user unless @user
    @twits=session.user.twits
-   @searches=session.user.twits.searches
+   @searches=session.user.searches
    render :preferences
 end
 

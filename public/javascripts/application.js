@@ -80,16 +80,7 @@
 	 $('#dialog_send_tweet').dialog('open');
 	 return false;
 	});
-    
 
-/*
-   $("a[id^='twitter_dialog']").livequery(function(){
-      $(this).click(function(){
-		$('#dialog_twitter_config').dialog('open');
-		return false;
-	});
-   });
-*/
 //---------function for saving preferences---------------
 $("#save_group").click(function(){
   var rm_visual_notify=false
@@ -116,11 +107,12 @@ $("#save_group").click(function(){
   })
 }
 )
-
+//----------------edit search dialog--------------------
     $("#dialog_search_edit").dialog({
      autoOpen: false,
      buttons: {
         "Save": function() {
+        $(this).dialog("close");
     },
 	 "Cancel": function() {
         $(this).dialog("close");
@@ -130,13 +122,53 @@ $("#save_group").click(function(){
 
    $("a[id^='edit_search_']").click(function(){
 	 $('#dialog_search_edit').dialog('open');
+         return false;
     });
     
-
+//------------------delete search dialog-----------------
+    $("#dialog_search_delete").dialog({
+     autoOpen: false,
+     buttons: {
+        "Delete": function() {
+        alert("Deleting search" + $("#hidden_delete_search_id").val())
+        $("#hidden_delete_search_id").val("")
+        $(this).dialog("close");
+    },
+	 "Cancel": function() {
+        $(this).dialog("close");
+    }
+   }
+   });
+   $("a[id^='delete_search_']").click(function(){
+          var id_val=$(this).attr('id').split('_').pop()
+          $("#hidden_delete_search_id").val(id_val)
+	 $('#dialog_search_delete').dialog('open');
+         return false;
+    });
+//------------------edit group dialog-----------------------
     $("#dialog_twitter_group_edit").dialog({
      autoOpen: false,
      buttons: {
         "Save": function() {
+        $(this).dialog("close");
+    },
+	 "Cancel": function() {
+        $(this).dialog("close");
+    }
+   }
+   });
+    $("a[id^=edit_group_]").click(function(){
+	 $('#dialog_twitter_group_edit').dialog('open');
+          return false;
+    });
+  //-------------------delete group dialog-------------------- 
+    $("#dialog_twitter_group_delete").dialog({
+     autoOpen: false,
+     buttons: {
+        "Delete": function() {
+        alert("Deleting Group " + $("#hidden_delete_group_id").val())
+        $("#hidden_delete_group_id").val("")
+        $(this).dialog("close")
     },
 	 "Cancel": function() {
         $(this).dialog("close");
@@ -144,9 +176,20 @@ $("#save_group").click(function(){
    }
    });
 
-   $("a[id^=edit_group_]").click(function(){
-	 $('#dialog_twitter_group_edit').dialog('open');
+    $("a[id^=delete_group_]").click(function(){
+          var group_id=$(this).attr('id').split('_').pop()
+          $("#hidden_delete_group_id").val(group_id)
+	 $('#dialog_twitter_group_delete').dialog('open');
+          return false;
     });
+
+   $(".twitter_icon").livequery(function(){
+      $(this).click(function(){
+                alert($(this).attr('id'));
+		return false;
+	});
+   });
+
 //---------Function for updating tweets every minute-------------------
    $("#user_display").everyTime(60000,function(i){
       var notified = false
@@ -230,7 +273,7 @@ function alert_new_tweets(visual,audio){
            $(tableID).find("tr:gt(" + limit + ")").remove()
            var test_name=$("#" + parent_div_id).find("p:eq(0)").html()
            $(".header").each(function(){
-                var test_regex=new RegExp($(this).html())
+                var test_regex=new RegExp("^" + $(this).html())
 		if(test_name.match(test_regex)!=null){
 		   $(this).css("color", 'red')
                 }

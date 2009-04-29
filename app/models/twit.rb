@@ -44,7 +44,7 @@ class Twit
          else
 				msg_save=msg.text
          end
-         t=Tweet.new(:message => msg_save, :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:%S"), :twitter_id => msg.id, :friend_id => f.id)
+         t=Tweet.new(:message => msg_save, :sent_date => Time.parse(msg.created_at).strftime("%Y-%m-%d %H:%M:%S"), :from_user => msg.user.screen_name, :twitter_id => msg.id, :friend_id => f.id)
          t.save
      end
      rescue Exception => e
