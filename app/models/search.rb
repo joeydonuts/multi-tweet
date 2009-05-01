@@ -13,6 +13,7 @@ class Search
 
   has n, :searchtweets
   belongs_to :user
+  before :destroy, :remove_tweets
   
   def get_tweets(user)
     search_tweets=[]
@@ -49,6 +50,7 @@ class Search
     return true    
   end
   def readable_tweets(user_id, reset=false, startup=false)
+     begin
       a_res=[]
       user=User.get(user_id)
       if startup
@@ -67,6 +69,16 @@ class Search
 	self.last_retrieve_id = z.first.id 
         self.save
       end
+      rescue
+       return []
+      end
       a_res 
   end
+    def remove_tweets()
+       repository.adapter.execute('DELETE FROM searchtweets where search_id=?', self.id)
+    end
+  def get_terms()
+	[self.search_name, self.search_terms]
+  end
+  
 end

@@ -1,0 +1,6 @@
+<% if not error_messages_for @search == '' %>
+   <%= error_messages_for @search %>
+<% else %>
+Successfully removed search <%= @search.search_name -%>.
+Your browser will reload this page in a moment.
+<% end %>

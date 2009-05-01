@@ -27,7 +27,7 @@
             <div class="content" id="content_<%=content_count -%>">
            <% content_count +=1 -%>
            <div id="group_<%= twit.id %>_<%= group.group_name.gsub(/\s/,'-') %>" class="group_display">              
-            <p class="group_name"><%= group.group_name %>
+            <p class="group_name"><span id="group_span_<%= group.id -%>"><%= group.group_name %></span>
             <%= link_to "Edit", "", :class => "group_name", :id => "edit_group_#{group.group_name.gsub(/\s/,'-')}" %>
              <%= link_to "Delete", "", :class => "group_name", :id => "delete_group_#{group.id}" %></p>
                <% table_counter = 0 -%>
@@ -65,7 +65,7 @@
                <div class="content" id="content_<%= content_count -%>">
                <% content_count += 1 %>
            <div id="search_<%= search.id %>" class="group_display">              
-            <p class="group_name"><%= search.search_name %>
+            <p class="group_name"><span id="search_span_<%= search.id -%>"><%= search.search_name %></span>
             <%= link_to "Edit", "", :class => "group_name", :id => "edit_search_#{search.id}" %>
              <%= link_to "Delete", "", :class => "group_name", :id => "delete_search_#{search.id}" %></p>
             </p>
@@ -106,8 +106,9 @@
    <%= hidden_field :name => "twit_id", :id => "send_tweet_twit_id", :value => "" %>
 </div>
 <div id="dialog_search_edit" title="Edit Search">
-   <p class="field_container"><%= text_field :search_name, :id => "edit_search_name", :label => "Name for the Search: ", :value => "" -%></p>
-   <p class="field_container"><%= text_field :search_term, :id => "edit_search_term", :label => "Search Words: " -%></p>
+   <p class="field_container"><%= text_field :search_name, :id => "name_edit_search", :label => "Name for the Search: ", :value => "" -%></p>
+   <p class="field_container"><%= text_field :search_term, :id => "term_edit_search", :label => "Search Words: ", :value => "" -%></p>
+   <%= hidden_field :name => "hidden_edit_search_id", :id => "hidden_edit_search_id", :value => "" %>
 </div>
 <div id="dialog_search_delete" title="Delete Search">
    <p>Delete this search?</p>

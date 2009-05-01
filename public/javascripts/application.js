@@ -112,6 +112,7 @@ $("#save_group").click(function(){
      autoOpen: false,
      buttons: {
         "Save": function() {
+        update_search();
         $(this).dialog("close");
     },
 	 "Cancel": function() {
@@ -121,6 +122,9 @@ $("#save_group").click(function(){
    });
 
    $("a[id^='edit_search_']").click(function(){
+         var search_id=$(this).attr('id').split('_').pop()
+         $("#hidden_edit_search_id").val(search_id)
+         get_search_terms(search_id)
 	 $('#dialog_search_edit').dialog('open');
          return false;
     });
@@ -130,8 +134,9 @@ $("#save_group").click(function(){
      autoOpen: false,
      buttons: {
         "Delete": function() {
-        alert("Deleting search" + $("#hidden_delete_search_id").val())
+        var search_id =  $("#hidden_delete_search_id").val()
         $("#hidden_delete_search_id").val("")
+        delete_search(search_id)
         $(this).dialog("close");
     },
 	 "Cancel": function() {
@@ -233,6 +238,38 @@ $("#save_group").click(function(){
    }); 
   })
 //--------------------------End of document ready function------------------------------
+function get_search_terms(){
+  var search_id=$("#hidden_edit_search_id").val()
+  $.post("../searches/get_search_terms",{ search_id : search_id },function(data){
+     a_dat=eval(data)
+     $("#name_edit_search").val(a_dat[0])
+     $("#term_edit_search").val(a_dat[1])
+  })
+}
+function update_search(){
+  var search_id=$("#hidden_edit_search_id").val()
+  var search_name=$("#name_edit_search").val()
+  var search_terms=$("#term_edit_search").val()
+  var vars = {search_id : search_id, search_name : search_name, search_terms : search_terms }
+  $.post("../searches/update",vars, function(data){
+  $("#search_span_" + $("#hidden_edit_search_id").val()).html(search_name) 
+  $("#hidden_edit_search_id").val("")
+  $("#name_edit_search").val("")
+  $("#term_edit_search").val("")
+  notify(data)
+})
+}
+function delete_search(search_id){
+  $.post("../searches/destroy",{search_id : search_id },function(data){
+      if(data.match(/Success/)){
+	notify(data)
+        location.reload();
+      }
+      else{
+	notify(data)
+      }
+  })
+}
 function alert_new_tweets(visual,audio){
   if(visual){
      notify("New tweets available")
@@ -325,6 +362,9 @@ function alert_new_tweets(visual,audio){
      $.post("../searches/new",{ search_name : search_name, search_term : search_term },
         function(data){
             notify(data);
+            if(data.match(/Success/)){
+              location.reload()
+            }
         });
      return true
   }
